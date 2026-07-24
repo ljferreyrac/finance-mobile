@@ -1,0 +1,55 @@
+name: finanzas_ia
+description: AI-powered personal finance app for the Peruvian market.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+  flutter: '>=3.41.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
+
+  # State management
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.5
+
+  # Networking
+  dio: ^5.7.0
+
+  # Navigation
+  go_router: ^14.6.2
+
+  # Secure token storage
+  flutter_secure_storage: ^9.2.2
+
+  # UI / fonts
+  google_fonts: ^6.2.1
+  flutter_animate: ^4.5.0
+
+  # Locale persistence
+  shared_preferences: ^2.3.0
+
+  # Charts
+  fl_chart: ^0.68.0
+
+  # Camera and media
+  camera: ^0.11.0+2
+  flutter_image_compress: ^2.3.0
+  flutter_sound: ^9.2.13
+  permission_handler: ^11.3.1
+  path_provider: ^2.1.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  generate: true
+  uses-material-design: true
