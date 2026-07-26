@@ -6,7 +6,9 @@ import 'package:finanzas_ia/l10n/app_localizations.dart';
 
 import '../../../core/services/onboarding_service.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../features/accounts/data/account_repository.dart';
+import '../../../features/accounts/bloc/account_bloc.dart';
+import '../../../features/accounts/bloc/account_event.dart';
+import '../../../features/accounts/bloc/account_state.dart';
 import '../../../features/auth/bloc/auth_bloc.dart';
 import '../../../features/auth/bloc/auth_event.dart';
 import '../widgets/step_indicator.dart';
@@ -18,6 +20,8 @@ import 'step_create_categories.dart';
 /// Navigation between steps is handled via setState, no extra routes pushed.
 /// On completion [OnboardingService.markComplete] is called and the auth bloc
 /// is refreshed so GoRouter redirects the user to the main dashboard.
+///
+/// [AccountBloc] must be provided above this widget.
 class OnboardingWrapper extends StatefulWidget {
   const OnboardingWrapper({super.key});
 
@@ -39,20 +43,24 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
 
   /// Jumps to step 2 if accounts already exist, so users who created
   /// accounts in a previous session (including via the old onboarding flow)
-  /// are not sent through step 1 again.
+  /// are not sent through step 1 again. The bloc's own result is handled by
+  /// the [BlocListener] in [build]; a fetch failure just leaves the user on
+  /// step 1, same as before.
   Future<void> _resumeStep() async {
     if (await _onboardingService.hasCompletedAccounts()) {
       if (mounted) setState(() => _step = 1);
       return;
     }
-    try {
-      final accounts = await AccountRepositoryImpl().getAccounts();
-      if (accounts.isNotEmpty) {
-        await _onboardingService.markAccountsComplete();
-        if (mounted) setState(() => _step = 1);
-      }
-    } catch (_) {
-      // Fetch failed, stay on step 1; the user can still continue.
+    if (mounted) {
+      context.read<AccountBloc>().add(const LoadAccounts());
+    }
+  }
+
+  void _handleAccountState(AccountState state) {
+    if (_step != 0) return;
+    if (state is AccountLoaded && state.accounts.isNotEmpty) {
+      _onboardingService.markAccountsComplete();
+      setState(() => _step = 1);
     }
   }
 
@@ -72,41 +80,44 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _OnboardingAppBar(currentStep: _step, totalSteps: _totalSteps),
-            Expanded(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 350),
-                transitionBuilder: (child, animation) {
-                  final slide = Tween<Offset>(
-                    begin: const Offset(0.08, 0),
-                    end: Offset.zero,
-                  ).animate(CurvedAnimation(
-                    parent: animation,
-                    curve: Curves.easeOut,
-                  ));
-                  return FadeTransition(
-                    opacity: animation,
-                    child: SlideTransition(position: slide, child: child),
-                  );
-                },
-                child: _step == 0
-                    ? StepCreateAccount(
-                        key: const ValueKey('step_account'),
-                        onComplete: _goToStep2,
-                      )
-                    : StepCreateCategories(
-                        key: const ValueKey('step_categories'),
-                        onComplete: _finish,
-                      ),
+    return BlocListener<AccountBloc, AccountState>(
+      listener: (context, state) => _handleAccountState(state),
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _OnboardingAppBar(currentStep: _step, totalSteps: _totalSteps),
+              Expanded(
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 350),
+                  transitionBuilder: (child, animation) {
+                    final slide = Tween<Offset>(
+                      begin: const Offset(0.08, 0),
+                      end: Offset.zero,
+                    ).animate(CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeOut,
+                    ));
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(position: slide, child: child),
+                    );
+                  },
+                  child: _step == 0
+                      ? StepCreateAccount(
+                          key: const ValueKey('step_account'),
+                          onComplete: _goToStep2,
+                        )
+                      : StepCreateCategories(
+                          key: const ValueKey('step_categories'),
+                          onComplete: _finish,
+                        ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

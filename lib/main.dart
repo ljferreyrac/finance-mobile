@@ -130,8 +130,17 @@ class _FinanzasAppState extends State<FinanzasApp> {
         ),
         GoRoute(
           path: '/onboarding',
-          builder: (context, state) => BlocProvider.value(
-            value: _authBloc,
+          builder: (context, state) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: _authBloc),
+              BlocProvider(
+                create: (_) => AccountBloc(repository: AccountRepositoryImpl()),
+              ),
+              BlocProvider(
+                create: (_) =>
+                    CategoryBloc(repository: CategoryRepositoryImpl()),
+              ),
+            ],
             child: const OnboardingWrapper(),
           ),
         ),
