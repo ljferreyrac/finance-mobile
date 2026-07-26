@@ -67,7 +67,7 @@ class _AccountPickerSheet extends StatelessWidget {
                     title: Text(account.name),
                     subtitle: Text(
                       '${account.currency}  '
-                      '${account.bank ?? account.type.label}',
+                      '${account.bank ?? account.type.localizedLabel(context)}',
                     ),
                     trailing: Text(
                       _formatBalance(account),

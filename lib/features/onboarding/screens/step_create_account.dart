@@ -366,7 +366,7 @@ class _TypeCard extends StatelessWidget {
             Icon(type.icon, color: color, size: 28),
             const SizedBox(height: 6),
             Text(
-              type.label,
+              type.localizedLabel(context),
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
