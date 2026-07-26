@@ -360,5 +360,16 @@
   "netWorthAssetsOnlyTooltip": "Mostrando solo activos",
   "netWorthAssetsOnlyTitle": "Activos",
   "accountActiveLabel": "Cuenta activa",
-  "accountActiveSubtitle": "Las cuentas inactivas no aparecen en el patrimonio neto"
+  "accountActiveSubtitle": "Las cuentas inactivas no aparecen en el patrimonio neto",
+
+  "accountCreated": "Cuenta creada",
+  "accountUpdated": "Cuenta actualizada",
+  "accountDeleted": "Cuenta eliminada",
+  "accountSetDefault": "Cuenta establecida como predeterminada",
+  "authInvalidCredentials": "Correo o contraseña incorrectos",
+  "noInternetConnection": "Sin conexion a internet",
+  "emailAlreadyRegistered": "Este correo ya esta registrado",
+  "micPermissionRequired": "Se necesita permiso de microfono para grabar audio.",
+  "recordingFileNotFound": "No se encontro el archivo de audio grabado.",
+  "someTransactionsFailedToSave": "Algunas transacciones no se pudieron guardar."
 }

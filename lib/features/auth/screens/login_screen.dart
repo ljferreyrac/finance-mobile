@@ -6,6 +6,7 @@ import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 import '../../../core/widgets/app_snack_bar.dart';
+import '../../../shared/utils/localized_message_resolver.dart';
 
 /// Login screen with email/password fields.
 ///
@@ -46,7 +47,8 @@ class _LoginScreenState extends State<LoginScreen> {
       listener: (context, state) {
         // Navigation is handled by the GoRouter redirect reacting to AuthAuthenticated.
         if (state is AuthError) {
-          AppSnackBar.showError(context, state.message);
+          AppSnackBar.showError(
+              context, state.message.resolve(AppLocalizations.of(context)!));
         }
       },
       builder: (context, state) {

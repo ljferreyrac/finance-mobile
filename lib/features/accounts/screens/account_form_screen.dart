@@ -9,6 +9,7 @@ import '../bloc/account_event.dart';
 import '../bloc/account_state.dart';
 import '../models/account_model.dart';
 import '../../../core/widgets/app_snack_bar.dart';
+import '../../../shared/utils/localized_message_resolver.dart';
 
 /// Pass [initialAccount] to enter edit mode (fields are pre-filled).
 /// [AccountBloc] must be provided above this route.
@@ -159,7 +160,8 @@ class _AccountFormScreenState extends State<AccountFormScreen> {
             Navigator.of(context).pop(true);
           }
           if (state is AccountError) {
-            AppSnackBar.showError(context, state.message);
+            AppSnackBar.showError(
+                context, state.message.resolve(AppLocalizations.of(context)!));
           }
         },
         child: BlocBuilder<AccountBloc, AccountState>(

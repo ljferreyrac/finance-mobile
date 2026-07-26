@@ -9,6 +9,7 @@ import '../models/category_model.dart';
 import '../widgets/category_color_picker.dart';
 import 'category_form_screen.dart';
 import '../../../core/widgets/app_snack_bar.dart';
+import '../../../shared/utils/localized_message_resolver.dart';
 
 /// Full-page screen for managing the user's custom categories.
 ///
@@ -164,12 +165,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       body: BlocConsumer<CategoryBloc, CategoryState>(
         listener: (context, state) {
           if (state is CategoryActionSuccess) {
-            AppSnackBar.showSuccess(context, state.message);
+            AppSnackBar.showSuccess(
+                context, state.message.resolve(AppLocalizations.of(context)!));
           }
           if (state is CategoryError) {
             AppSnackBar.showError(
               context,
-              state.message,
+              state.message.resolve(AppLocalizations.of(context)!),
               actionLabel: AppLocalizations.of(context)!.retry,
               onAction: () =>
                   context.read<CategoryBloc>().add(const LoadCategories()),
@@ -188,7 +190,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             categories = state.categories;
           } else if (state is CategoryError) {
             return _ErrorBody(
-              message: state.message,
+              message: state.message.resolve(AppLocalizations.of(context)!),
               onRetry: () =>
                   context.read<CategoryBloc>().add(const LoadCategories()),
             );

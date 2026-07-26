@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../shared/models/localized_message.dart';
 import '../models/category_model.dart';
 
 /// States emitted by [CategoryBloc].
@@ -35,7 +36,7 @@ class CategoryLoaded extends CategoryState {
 class CategoryError extends CategoryState {
   const CategoryError(this.message);
 
-  final String message;
+  final LocalizedMessage message;
 
   @override
   List<Object?> get props => [message];
@@ -52,7 +53,7 @@ class CategoryActionSuccess extends CategoryState {
   });
 
   final List<CategoryModel> categories;
-  final String message;
+  final LocalizedMessage message;
 
   /// Returns the category marked as default, or null when none is set.
   CategoryModel? get defaultCategory =>

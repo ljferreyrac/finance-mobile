@@ -27,6 +27,7 @@ import '../widgets/category_picker_sheet.dart';
 import '../widgets/tag_chip.dart';
 import '../widgets/tag_picker_sheet.dart';
 import '../../../core/widgets/app_snack_bar.dart';
+import '../../../shared/utils/localized_message_resolver.dart';
 import '../widgets/transaction_type_selector.dart';
 
 /// Adaptive form for creating or editing a transaction.
@@ -483,7 +484,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
             Navigator.of(context).pop(true);
           }
           if (state is TransactionError) {
-            AppSnackBar.showError(context, state.message);
+            AppSnackBar.showError(context, state.message.resolve(l10n));
           }
         },
         child: BlocListener<AccountBloc, AccountState>(

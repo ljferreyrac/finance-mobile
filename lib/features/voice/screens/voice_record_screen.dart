@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:finanzas_ia/l10n/app_localizations.dart';
 
 import '../bloc/voice_bloc.dart';
 import '../bloc/voice_event.dart';
 import '../bloc/voice_state.dart';
 import 'voice_review_screen.dart';
 import '../../../core/widgets/app_snack_bar.dart';
+import '../../../shared/utils/localized_message_resolver.dart';
 
 /// Full-screen modal for recording a voice expense entry.
 ///
@@ -42,7 +44,7 @@ class VoiceRecordScreen extends StatelessWidget {
         if (state.status == VoiceStatus.error && state.errorMessage != null) {
           AppSnackBar.showError(
             context,
-            state.errorMessage!,
+            state.errorMessage!.resolve(AppLocalizations.of(context)!),
             actionLabel: 'Reintentar',
             onAction: () => context.read<VoiceBloc>().add(const VoiceReset()),
           );

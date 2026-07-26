@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../shared/models/localized_message.dart';
+
 /// States emitted by [AuthBloc].
 abstract class AuthState extends Equatable {
   const AuthState();
@@ -35,11 +37,11 @@ class AuthUnauthenticated extends AuthState {
   const AuthUnauthenticated();
 }
 
-/// [message] is a user-facing Spanish string suitable for a SnackBar.
+/// [message] is resolved to a user-facing localized string at render time.
 class AuthError extends AuthState {
   const AuthError(this.message);
 
-  final String message;
+  final LocalizedMessage message;
 
   @override
   List<Object?> get props => [message];

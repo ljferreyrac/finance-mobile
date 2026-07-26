@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../../shared/models/failure.dart';
+import '../../../shared/models/failure_code.dart';
+import '../../../shared/models/localized_message.dart';
 import '../data/transaction_repository.dart';
 import '../models/transaction_model.dart';
 import 'transaction_event.dart';
@@ -48,9 +50,9 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         activeFilter: _activeFilter,
       ));
     } on Failure catch (f) {
-      emit(TransactionError(f.message));
+      emit(TransactionError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(TransactionError(e.toString()));
+      emit(TransactionError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -68,9 +70,9 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         activeFilter: _activeFilter,
       ));
     } on Failure catch (f) {
-      emit(TransactionError(f.message));
+      emit(TransactionError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(TransactionError(e.toString()));
+      emit(TransactionError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -89,9 +91,9 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         activeFilter: _activeFilter,
       ));
     } on Failure catch (f) {
-      emit(TransactionError(f.message));
+      emit(TransactionError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(TransactionError(e.toString()));
+      emit(TransactionError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -123,7 +125,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         nextCursor: current.nextCursor,
         activeFilter: _activeFilter,
       ));
-      emit(TransactionError(f.message));
+      emit(TransactionError(LocalizedMessage.raw(f.message)));
     } catch (e) {
       emit(TransactionLoaded(
         items: current.items,
@@ -131,7 +133,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         nextCursor: current.nextCursor,
         activeFilter: _activeFilter,
       ));
-      emit(TransactionError(e.toString()));
+      emit(TransactionError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -141,11 +143,12 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   ) async {
     try {
       await _repository.createTransaction(event.body);
-      emit(const TransactionOperationSuccess(message: 'Transacción creada'));
+      emit(const TransactionOperationSuccess(
+          message: LocalizedMessage.code(FailureCode.transactionCreated)));
     } on Failure catch (f) {
-      emit(TransactionError(f.message));
+      emit(TransactionError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(TransactionError(e.toString()));
+      emit(TransactionError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -156,11 +159,11 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     try {
       await _repository.updateTransaction(event.id, event.body);
       emit(const TransactionOperationSuccess(
-          message: 'Transacción actualizada'));
+          message: LocalizedMessage.code(FailureCode.transactionUpdated)));
     } on Failure catch (f) {
-      emit(TransactionError(f.message));
+      emit(TransactionError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(TransactionError(e.toString()));
+      emit(TransactionError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -170,11 +173,12 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   ) async {
     try {
       await _repository.deleteTransaction(event.id);
-      emit(const TransactionOperationSuccess(message: 'Transacción eliminada'));
+      emit(const TransactionOperationSuccess(
+          message: LocalizedMessage.code(FailureCode.transactionDeleted)));
     } on Failure catch (f) {
-      emit(TransactionError(f.message));
+      emit(TransactionError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(TransactionError(e.toString()));
+      emit(TransactionError(LocalizedMessage.raw(e.toString())));
     }
   }
 

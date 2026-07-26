@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../shared/models/localized_message.dart';
 import '../models/transaction_model.dart';
 import 'transaction_event.dart';
 
@@ -54,7 +55,7 @@ class TransactionLoadingMore extends TransactionState {
 class TransactionOperationSuccess extends TransactionState {
   const TransactionOperationSuccess({required this.message});
 
-  final String message;
+  final LocalizedMessage message;
 
   @override
   List<Object?> get props => [message];
@@ -63,7 +64,7 @@ class TransactionOperationSuccess extends TransactionState {
 class TransactionError extends TransactionState {
   const TransactionError(this.message);
 
-  final String message;
+  final LocalizedMessage message;
 
   @override
   List<Object?> get props => [message];

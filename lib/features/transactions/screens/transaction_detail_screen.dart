@@ -16,6 +16,7 @@ import '../models/tag_model.dart';
 import '../widgets/tag_chip.dart';
 import 'transaction_form_screen.dart';
 import '../../../core/widgets/app_snack_bar.dart';
+import '../../../shared/utils/localized_message_resolver.dart';
 
 /// Read-only detail view of a single transaction.
 ///
@@ -54,7 +55,7 @@ class TransactionDetailScreen extends StatelessWidget {
             Navigator.of(context).pop();
           }
           if (state is TransactionError) {
-            AppSnackBar.showError(context, state.message);
+            AppSnackBar.showError(context, state.message.resolve(l10n));
           }
         },
         child: ListView(

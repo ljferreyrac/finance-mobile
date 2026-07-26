@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:finanzas_ia/l10n/app_localizations.dart';
 
 import '../../accounts/models/account_model.dart';
 import '../../categories/models/category_model.dart';
@@ -11,6 +12,7 @@ import '../bloc/voice_state.dart';
 import '../models/transaction_draft_model.dart';
 import '../widgets/draft_card_widget.dart';
 import '../../../core/widgets/app_snack_bar.dart';
+import '../../../shared/utils/localized_message_resolver.dart';
 
 /// Review screen displayed after the backend NLP extracts transaction drafts.
 ///
@@ -46,7 +48,7 @@ class VoiceReviewScreen extends StatelessWidget {
         if (state.status == VoiceStatus.error && state.errorMessage != null) {
           AppSnackBar.showError(
             context,
-            state.errorMessage!,
+            state.errorMessage!.resolve(AppLocalizations.of(context)!),
             actionLabel: state.savedCount > 0 ? null : 'Reintentar',
             onAction: state.savedCount > 0
                 ? null

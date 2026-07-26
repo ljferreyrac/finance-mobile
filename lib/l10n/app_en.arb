@@ -360,5 +360,16 @@
   "netWorthAssetsOnlyTooltip": "Showing assets only",
   "netWorthAssetsOnlyTitle": "Assets",
   "accountActiveLabel": "Active account",
-  "accountActiveSubtitle": "Inactive accounts are excluded from net worth"
+  "accountActiveSubtitle": "Inactive accounts are excluded from net worth",
+
+  "accountCreated": "Account created",
+  "accountUpdated": "Account updated",
+  "accountDeleted": "Account deleted",
+  "accountSetDefault": "Account set as default",
+  "authInvalidCredentials": "Incorrect email or password",
+  "noInternetConnection": "No internet connection",
+  "emailAlreadyRegistered": "This email is already registered",
+  "micPermissionRequired": "Microphone permission is needed to record audio.",
+  "recordingFileNotFound": "The recorded audio file could not be found.",
+  "someTransactionsFailedToSave": "Some transactions could not be saved."
 }

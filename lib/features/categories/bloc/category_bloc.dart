@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/models/failure.dart';
+import '../../../shared/models/failure_code.dart';
+import '../../../shared/models/localized_message.dart';
 import '../data/category_repository.dart';
 import 'category_event.dart';
 import 'category_state.dart';
@@ -32,9 +34,9 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       final categories = await _repository.listCategories();
       emit(CategoryLoaded(categories));
     } on Failure catch (f) {
-      emit(CategoryError(f.message));
+      emit(CategoryError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(CategoryError(e.toString()));
+      emit(CategoryError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -53,12 +55,12 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       final categories = await _repository.listCategories();
       emit(CategoryActionSuccess(
         categories: categories,
-        message: 'Categoría "${event.name}" creada',
+        message: const LocalizedMessage.code(FailureCode.categoryCreated),
       ));
     } on Failure catch (f) {
-      emit(CategoryError(f.message));
+      emit(CategoryError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(CategoryError(e.toString()));
+      emit(CategoryError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -78,12 +80,12 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       final categories = await _repository.listCategories();
       emit(CategoryActionSuccess(
         categories: categories,
-        message: 'Categoría actualizada',
+        message: const LocalizedMessage.code(FailureCode.categoryUpdated),
       ));
     } on Failure catch (f) {
-      emit(CategoryError(f.message));
+      emit(CategoryError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(CategoryError(e.toString()));
+      emit(CategoryError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -100,12 +102,12 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       final categories = await _repository.listCategories();
       emit(CategoryActionSuccess(
         categories: categories,
-        message: 'Categoría eliminada',
+        message: const LocalizedMessage.code(FailureCode.categoryDeleted),
       ));
     } on Failure catch (f) {
-      emit(CategoryError(f.message));
+      emit(CategoryError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(CategoryError(e.toString()));
+      emit(CategoryError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -119,12 +121,12 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       final categories = await _repository.listCategories();
       emit(CategoryActionSuccess(
         categories: categories,
-        message: 'Categoría establecida como predeterminada',
+        message: const LocalizedMessage.code(FailureCode.categorySetDefault),
       ));
     } on Failure catch (f) {
-      emit(CategoryError(f.message));
+      emit(CategoryError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(CategoryError(e.toString()));
+      emit(CategoryError(LocalizedMessage.raw(e.toString())));
     }
   }
 }

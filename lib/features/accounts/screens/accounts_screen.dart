@@ -10,6 +10,7 @@ import '../bloc/account_state.dart';
 import '../models/account_model.dart';
 import 'account_form_screen.dart';
 import '../../../core/widgets/app_snack_bar.dart';
+import '../../../shared/utils/localized_message_resolver.dart';
 
 /// [AccountBloc] must be provided above this route.
 class AccountsScreen extends StatefulWidget {
@@ -110,12 +111,12 @@ class _AccountsScreenState extends State<AccountsScreen> {
       body: BlocConsumer<AccountBloc, AccountState>(
         listener: (context, state) {
           if (state is AccountOperationSuccess) {
-            AppSnackBar.showSuccess(context, state.message);
+            AppSnackBar.showSuccess(context, state.message.resolve(l10n));
           }
           if (state is AccountError) {
             AppSnackBar.showError(
               context,
-              state.message,
+              state.message.resolve(l10n),
               actionLabel: l10n.retry,
               onAction: () =>
                   context.read<AccountBloc>().add(const LoadAccounts()),
@@ -138,7 +139,7 @@ class _AccountsScreenState extends State<AccountsScreen> {
             netWorth = state.netWorth;
           } else if (state is AccountError) {
             return _ErrorBody(
-              message: state.message,
+              message: state.message.resolve(l10n),
               onRetry: () =>
                   context.read<AccountBloc>().add(const LoadAccounts()),
             );

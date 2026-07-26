@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/models/failure.dart';
+import '../../../shared/models/failure_code.dart';
+import '../../../shared/models/localized_message.dart';
 import '../data/account_repository.dart';
 import '../models/account_model.dart';
 import 'account_event.dart';
@@ -38,9 +40,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       final netWorth = results[1] as NetWorthModel;
       emit(AccountLoaded(accounts: accounts, netWorth: netWorth));
     } on Failure catch (f) {
-      emit(AccountError(f.message));
+      emit(AccountError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(AccountError(e.toString()));
+      emit(AccountError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -60,12 +62,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       emit(AccountOperationSuccess(
         accounts: accounts,
         netWorth: netWorth,
-        message: 'Cuenta creada',
+        message: const LocalizedMessage.code(FailureCode.accountCreated),
       ));
     } on Failure catch (f) {
-      emit(AccountError(f.message));
+      emit(AccountError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(AccountError(e.toString()));
+      emit(AccountError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -85,12 +87,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       emit(AccountOperationSuccess(
         accounts: accounts,
         netWorth: netWorth,
-        message: 'Cuenta actualizada',
+        message: const LocalizedMessage.code(FailureCode.accountUpdated),
       ));
     } on Failure catch (f) {
-      emit(AccountError(f.message));
+      emit(AccountError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(AccountError(e.toString()));
+      emit(AccountError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -110,12 +112,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       emit(AccountOperationSuccess(
         accounts: accounts,
         netWorth: netWorth,
-        message: 'Cuenta eliminada',
+        message: const LocalizedMessage.code(FailureCode.accountDeleted),
       ));
     } on Failure catch (f) {
-      emit(AccountError(f.message));
+      emit(AccountError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(AccountError(e.toString()));
+      emit(AccountError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -135,12 +137,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       emit(AccountOperationSuccess(
         accounts: accounts,
         netWorth: netWorth,
-        message: 'Cuenta establecida como predeterminada',
+        message: const LocalizedMessage.code(FailureCode.accountSetDefault),
       ));
     } on Failure catch (f) {
-      emit(AccountError(f.message));
+      emit(AccountError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(AccountError(e.toString()));
+      emit(AccountError(LocalizedMessage.raw(e.toString())));
     }
   }
 }

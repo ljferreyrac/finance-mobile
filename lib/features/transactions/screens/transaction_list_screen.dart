@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_snack_bar.dart';
+import '../../../shared/utils/localized_message_resolver.dart';
 
 import '../../accounts/bloc/account_bloc.dart';
 import '../../accounts/bloc/account_event.dart';
@@ -250,13 +251,14 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
       body: BlocConsumer<TransactionBloc, TransactionState>(
         listener: (context, state) {
           if (state is TransactionOperationSuccess) {
-            AppSnackBar.showSuccess(context, state.message);
+            AppSnackBar.showSuccess(
+                context, state.message.resolve(AppLocalizations.of(context)!));
             context.read<TransactionBloc>().add(const RefreshTransactions());
           }
           if (state is TransactionError) {
             AppSnackBar.showError(
               context,
-              state.message,
+              state.message.resolve(AppLocalizations.of(context)!),
               actionLabel: AppLocalizations.of(context)!.retry,
               onAction: () => context
                   .read<TransactionBloc>()
@@ -348,7 +350,10 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(state.message, textAlign: TextAlign.center),
+              Text(
+                state.message.resolve(AppLocalizations.of(context)!),
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: () => context

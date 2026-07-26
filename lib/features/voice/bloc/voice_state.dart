@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../shared/models/localized_message.dart';
 import '../../accounts/models/account_model.dart';
 import '../../categories/models/category_model.dart';
 import '../../transactions/models/tag_model.dart';
@@ -44,8 +45,8 @@ class VoiceState extends Equatable {
   /// Extracted transaction drafts returned by the backend.
   final List<TransactionDraftModel> drafts;
 
-  /// Human-readable error message. Non-null when [status] is [VoiceStatus.error].
-  final String? errorMessage;
+  /// Error message. Non-null when [status] is [VoiceStatus.error].
+  final LocalizedMessage? errorMessage;
 
   /// Number of drafts that were successfully saved to the backend.
   final int savedCount;
@@ -59,7 +60,7 @@ class VoiceState extends Equatable {
     DateTime? recordingStartedAt,
     bool clearRecordingStart = false,
     List<TransactionDraftModel>? drafts,
-    String? errorMessage,
+    LocalizedMessage? errorMessage,
     bool clearError = false,
     int? savedCount,
     List<AccountModel>? availableAccounts,

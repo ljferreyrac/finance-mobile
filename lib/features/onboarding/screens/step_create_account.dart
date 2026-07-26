@@ -9,6 +9,7 @@ import '../../../features/accounts/bloc/account_bloc.dart';
 import '../../../features/accounts/bloc/account_event.dart';
 import '../../../features/accounts/bloc/account_state.dart';
 import '../../../features/accounts/models/account_model.dart';
+import '../../../shared/utils/localized_message_resolver.dart';
 
 /// Step 1 of onboarding: create at least one financial account.
 ///
@@ -76,7 +77,7 @@ class _StepCreateAccountState extends State<StepCreateAccount> {
     context.read<AccountBloc>().add(DeleteAccount(account.id));
   }
 
-  void _handleAccountState(AccountState state) {
+  void _handleAccountState(BuildContext context, AccountState state) {
     if (state is AccountLoading) {
       // The very first LoadAccounts also emits this; don't flip the button
       // spinners for it, only for a mutation triggered after that.
@@ -120,7 +121,7 @@ class _StepCreateAccountState extends State<StepCreateAccount> {
         _isSaving = false;
         _isDeleting = false;
         _pendingAction = null;
-        _error = state.message;
+        _error = state.message.resolve(AppLocalizations.of(context)!);
       });
     }
   }
@@ -132,7 +133,7 @@ class _StepCreateAccountState extends State<StepCreateAccount> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return BlocListener<AccountBloc, AccountState>(
-      listener: (context, state) => _handleAccountState(state),
+      listener: (context, state) => _handleAccountState(context, state),
       child: _isLoadingExisting
           ? const Center(child: CircularProgressIndicator())
           : _buildForm(context, l10n, textTheme, colorScheme),
