@@ -3,6 +3,8 @@ import '../../../core/services/onboarding_service.dart';
 import '../../../core/services/token_storage.dart';
 import '../../../features/categories/data/category_repository.dart';
 import '../../../shared/models/failure.dart';
+import '../../../shared/models/failure_code.dart';
+import '../../../shared/models/localized_message.dart';
 import '../data/auth_repository.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -57,13 +59,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final needsOnboarding = !await _onboardingComplete();
       emit(AuthAuthenticated(needsOnboarding: needsOnboarding));
     } on UnauthorizedFailure {
-      emit(const AuthError('Correo o contraseña incorrectos'));
+      emit(const AuthError(
+          LocalizedMessage.code(FailureCode.authInvalidCredentials)));
     } on NetworkFailure {
-      emit(const AuthError('Sin conexion a internet'));
+      emit(const AuthError(
+          LocalizedMessage.code(FailureCode.noInternetConnection)));
     } on Failure catch (f) {
-      emit(AuthError(f.message));
+      emit(AuthError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(AuthError(LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -83,16 +87,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const AuthAuthenticated(needsOnboarding: true));
     } on ServerFailure catch (f) {
       if (f.statusCode == 409) {
-        emit(const AuthError('Este correo ya esta registrado'));
+        emit(const AuthError(
+            LocalizedMessage.code(FailureCode.authEmailAlreadyRegistered)));
       } else {
-        emit(AuthError(f.message));
+        emit(AuthError(LocalizedMessage.raw(f.message)));
       }
     } on NetworkFailure {
-      emit(const AuthError('Sin conexion a internet'));
+      emit(const AuthError(
+          LocalizedMessage.code(FailureCode.noInternetConnection)));
     } on Failure catch (f) {
-      emit(AuthError(f.message));
+      emit(AuthError(LocalizedMessage.raw(f.message)));
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(AuthError(LocalizedMessage.raw(e.toString())));
     }
   }
 

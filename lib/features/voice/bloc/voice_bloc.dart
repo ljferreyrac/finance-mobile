@@ -6,6 +6,8 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/api/dio_client.dart';
 import '../../../shared/models/failure.dart';
+import '../../../shared/models/failure_code.dart';
+import '../../../shared/models/localized_message.dart';
 import '../../accounts/data/account_repository.dart';
 import '../../categories/data/category_repository.dart';
 import '../../transactions/data/tag_repository.dart';
@@ -53,7 +55,8 @@ class VoiceBloc extends Bloc<VoiceEvent, VoiceState> {
     if (!status.isGranted) {
       emit(state.copyWith(
         status: VoiceStatus.error,
-        errorMessage: 'Se necesita permiso de microfono para grabar audio.',
+        errorMessage: const LocalizedMessage.code(
+            FailureCode.voiceMicPermissionRequired),
       ));
       return;
     }
@@ -82,7 +85,10 @@ class VoiceBloc extends Bloc<VoiceEvent, VoiceState> {
     } catch (e) {
       emit(state.copyWith(
         status: VoiceStatus.error,
-        errorMessage: 'No se pudo iniciar la grabacion: ${e.toString()}',
+        // Not worth its own FailureCode: a rare recorder/hardware failure
+        // path, unlike the common cases below. Stays Spanish-only for now.
+        errorMessage: LocalizedMessage.raw(
+            'No se pudo iniciar la grabacion: ${e.toString()}'),
       ));
     }
   }
@@ -96,7 +102,8 @@ class VoiceBloc extends Bloc<VoiceEvent, VoiceState> {
     if (audioPath == null) {
       emit(state.copyWith(
         status: VoiceStatus.error,
-        errorMessage: 'No se encontro el archivo de audio grabado.',
+        errorMessage: const LocalizedMessage.code(
+            FailureCode.voiceRecordingFileNotFound),
       ));
       return;
     }
@@ -138,14 +145,17 @@ class VoiceBloc extends Bloc<VoiceEvent, VoiceState> {
         availableTags: List.unmodifiable(tags),
       ));
     } on Failure catch (f) {
-      emit(state.copyWith(status: VoiceStatus.error, errorMessage: f.message));
+      emit(state.copyWith(
+          status: VoiceStatus.error,
+          errorMessage: LocalizedMessage.raw(f.message)));
     } on DioException catch (e) {
       emit(state.copyWith(
           status: VoiceStatus.error,
-          errorMessage: DioClient.errorMessage(e)));
+          errorMessage: LocalizedMessage.raw(DioClient.errorMessage(e))));
     } catch (e) {
       emit(state.copyWith(
-          status: VoiceStatus.error, errorMessage: e.toString()));
+          status: VoiceStatus.error,
+          errorMessage: LocalizedMessage.raw(e.toString())));
     }
   }
 
@@ -169,18 +179,18 @@ class VoiceBloc extends Bloc<VoiceEvent, VoiceState> {
     emit(state.copyWith(status: VoiceStatus.saving));
 
     int saved = 0;
-    String? lastError;
+    LocalizedMessage? lastError;
 
     for (final draft in included) {
       try {
         await _api.createTransaction(draft.toCreateBody());
         saved++;
       } on Failure catch (f) {
-        lastError = f.message;
+        lastError = LocalizedMessage.raw(f.message);
       } on DioException catch (e) {
-        lastError = DioClient.errorMessage(e);
+        lastError = LocalizedMessage.raw(DioClient.errorMessage(e));
       } catch (e) {
-        lastError = e.toString();
+        lastError = LocalizedMessage.raw(e.toString());
       }
     }
 
@@ -194,8 +204,9 @@ class VoiceBloc extends Bloc<VoiceEvent, VoiceState> {
       emit(state.copyWith(
         status: VoiceStatus.error,
         savedCount: saved,
-        errorMessage:
-            lastError ?? 'Algunas transacciones no se pudieron guardar.',
+        errorMessage: lastError ??
+            const LocalizedMessage.code(
+                FailureCode.voiceSomeTransactionsFailedToSave),
       ));
     }
   }
@@ -216,7 +227,7 @@ class VoiceBloc extends Bloc<VoiceEvent, VoiceState> {
   ) {
     emit(state.copyWith(
       status: VoiceStatus.error,
-      errorMessage: event.message,
+      errorMessage: LocalizedMessage.raw(event.message),
     ));
   }
 

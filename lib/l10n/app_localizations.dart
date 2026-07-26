@@ -1789,6 +1789,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Inactive accounts are excluded from net worth'**
   String get accountActiveSubtitle;
+
+  /// No description provided for @accountCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created'**
+  String get accountCreated;
+
+  /// No description provided for @accountUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Account updated'**
+  String get accountUpdated;
+
+  /// No description provided for @accountDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted'**
+  String get accountDeleted;
+
+  /// No description provided for @accountSetDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Account set as default'**
+  String get accountSetDefault;
+
+  /// No description provided for @authInvalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect email or password'**
+  String get authInvalidCredentials;
+
+  /// No description provided for @noInternetConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection'**
+  String get noInternetConnection;
+
+  /// No description provided for @emailAlreadyRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'This email is already registered'**
+  String get emailAlreadyRegistered;
+
+  /// No description provided for @micPermissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone permission is needed to record audio.'**
+  String get micPermissionRequired;
+
+  /// No description provided for @recordingFileNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'The recorded audio file could not be found.'**
+  String get recordingFileNotFound;
+
+  /// No description provided for @someTransactionsFailedToSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Some transactions could not be saved.'**
+  String get someTransactionsFailedToSave;
 }
 
 class _AppLocalizationsDelegate

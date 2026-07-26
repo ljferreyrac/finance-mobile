@@ -893,4 +893,37 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get accountActiveSubtitle =>
       'Inactive accounts are excluded from net worth';
+
+  @override
+  String get accountCreated => 'Account created';
+
+  @override
+  String get accountUpdated => 'Account updated';
+
+  @override
+  String get accountDeleted => 'Account deleted';
+
+  @override
+  String get accountSetDefault => 'Account set as default';
+
+  @override
+  String get authInvalidCredentials => 'Incorrect email or password';
+
+  @override
+  String get noInternetConnection => 'No internet connection';
+
+  @override
+  String get emailAlreadyRegistered => 'This email is already registered';
+
+  @override
+  String get micPermissionRequired =>
+      'Microphone permission is needed to record audio.';
+
+  @override
+  String get recordingFileNotFound =>
+      'The recorded audio file could not be found.';
+
+  @override
+  String get someTransactionsFailedToSave =>
+      'Some transactions could not be saved.';
 }

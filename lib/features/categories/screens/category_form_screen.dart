@@ -9,6 +9,7 @@ import '../models/category_model.dart';
 import '../widgets/category_color_picker.dart';
 import '../widgets/category_icon_picker.dart';
 import '../../../core/widgets/app_snack_bar.dart';
+import '../../../shared/utils/localized_message_resolver.dart';
 
 /// Create / edit screen for a single category.
 ///
@@ -99,7 +100,8 @@ class _CategoryFormScreenState extends State<CategoryFormScreen> {
         }
         if (state is CategoryError) {
           setState(() => _isSubmitting = false);
-          AppSnackBar.showError(context, state.message);
+          AppSnackBar.showError(
+              context, state.message.resolve(AppLocalizations.of(context)!));
         }
       },
       child: Scaffold(

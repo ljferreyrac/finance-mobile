@@ -897,4 +897,37 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get accountActiveSubtitle =>
       'Las cuentas inactivas no aparecen en el patrimonio neto';
+
+  @override
+  String get accountCreated => 'Cuenta creada';
+
+  @override
+  String get accountUpdated => 'Cuenta actualizada';
+
+  @override
+  String get accountDeleted => 'Cuenta eliminada';
+
+  @override
+  String get accountSetDefault => 'Cuenta establecida como predeterminada';
+
+  @override
+  String get authInvalidCredentials => 'Correo o contraseña incorrectos';
+
+  @override
+  String get noInternetConnection => 'Sin conexion a internet';
+
+  @override
+  String get emailAlreadyRegistered => 'Este correo ya esta registrado';
+
+  @override
+  String get micPermissionRequired =>
+      'Se necesita permiso de microfono para grabar audio.';
+
+  @override
+  String get recordingFileNotFound =>
+      'No se encontro el archivo de audio grabado.';
+
+  @override
+  String get someTransactionsFailedToSave =>
+      'Algunas transacciones no se pudieron guardar.';
 }

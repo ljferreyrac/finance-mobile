@@ -7,6 +7,7 @@ import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 import '../../../core/locale/locale_cubit.dart';
 import '../../../core/widgets/app_snack_bar.dart';
+import '../../../shared/utils/localized_message_resolver.dart';
 
 /// Registration screen: full name, email, password, confirm password, currency.
 ///
@@ -56,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       listener: (context, state) {
         // Navigation is handled by the GoRouter redirect reacting to AuthAuthenticated.
         if (state is AuthError) {
-          AppSnackBar.showError(context, state.message);
+          AppSnackBar.showError(context, state.message.resolve(l10n));
         }
       },
       builder: (context, state) {

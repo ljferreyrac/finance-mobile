@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../shared/models/localized_message.dart';
 import '../models/account_model.dart';
 
 abstract class AccountState extends Equatable {
@@ -43,7 +44,7 @@ class AccountOperationSuccess extends AccountState {
 
   final List<AccountModel> accounts;
   final NetWorthModel netWorth;
-  final String message;
+  final LocalizedMessage message;
 
   @override
   List<Object?> get props => [accounts, netWorth, message];
@@ -52,7 +53,7 @@ class AccountOperationSuccess extends AccountState {
 class AccountError extends AccountState {
   const AccountError(this.message);
 
-  final String message;
+  final LocalizedMessage message;
 
   @override
   List<Object?> get props => [message];
