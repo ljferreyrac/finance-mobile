@@ -9,7 +9,7 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get appTitle => 'Finanzas IA';
+  String get appTitle => 'Solvi';
 
   @override
   String get loginTitle => 'Iniciar sesión';

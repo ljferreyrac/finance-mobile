@@ -172,7 +172,7 @@ class _FinanzasAppState extends State<FinanzasApp> {
       child: BlocBuilder<LocaleCubit, Locale>(
         builder: (context, locale) {
           return MaterialApp.router(
-            title: 'Finanzas IA',
+            title: 'Solvi',
             debugShowCheckedModeBanner: false,
             theme: AppTheme.light(),
             darkTheme: AppTheme.dark(),
