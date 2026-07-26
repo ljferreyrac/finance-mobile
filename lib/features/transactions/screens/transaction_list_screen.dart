@@ -322,6 +322,7 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'transaction_list_fab',
         onPressed: () => _openForm(),
         tooltip: AppLocalizations.of(context)!.newTransaction,
         child: const Icon(Icons.add),
