@@ -315,6 +315,7 @@
   "onboardingAccountNameQuestion": "What would you like to call it?",
   "onboardingAccountNameHint": "e.g. BCP Salary Account",
   "onboardingAccountNameRequired": "Please enter a name",
+  "onboardingInitialBalanceInvalid": "Please enter a valid amount",
   "onboardingSavingLabel": "Saving...",
   "onboardingAddAccountButton": "Add account",
   "onboardingAccountsAddedLabel": "Accounts added",

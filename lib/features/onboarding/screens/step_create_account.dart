@@ -222,6 +222,10 @@ class _StepCreateAccountState extends State<StepCreateAccount> {
                 ),
                 prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
               ),
+              validator: (v) => (v != null && v.trim().isNotEmpty &&
+                      double.tryParse(v.trim()) == null)
+                  ? l10n.onboardingInitialBalanceInvalid
+                  : null,
             ).animate().fadeIn(duration: 300.ms, delay: 240.ms),
             const SizedBox(height: 8),
 

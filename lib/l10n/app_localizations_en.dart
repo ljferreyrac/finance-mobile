@@ -767,6 +767,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingAccountNameRequired => 'Please enter a name';
 
   @override
+  String get onboardingInitialBalanceInvalid => 'Please enter a valid amount';
+
+  @override
   String get onboardingSavingLabel => 'Saving...';
 
   @override
