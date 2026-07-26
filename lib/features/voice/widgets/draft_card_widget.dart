@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:finanzas_ia/l10n/app_localizations.dart';
 
 import '../../accounts/models/account_model.dart';
 import '../../categories/models/category_model.dart';
@@ -34,6 +35,7 @@ class DraftCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final colorScheme = theme.colorScheme;
     final isExpense = draft.type == 'EXPENSE';
     final isIncome = draft.type == 'INCOME';
@@ -80,7 +82,7 @@ class DraftCardWidget extends StatelessWidget {
                             child: Text(
                               draft.merchant ??
                                   draft.description ??
-                                  _typeLabel(draft.type),
+                                  _typeLabel(context, draft.type),
                               style: theme.textTheme.bodyLarge?.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
@@ -91,7 +93,7 @@ class DraftCardWidget extends StatelessWidget {
                           if (lowConfidence) ...[
                             const SizedBox(width: 6),
                             Tooltip(
-                              message: 'Confianza baja: revisa este campo',
+                              message: l10n.voiceLowConfidenceTooltip,
                               child: Icon(
                                 Icons.warning_amber_rounded,
                                 size: 18,
@@ -106,16 +108,16 @@ class DraftCardWidget extends StatelessWidget {
                       _MetaRow(
                         icon: Icons.category_outlined,
                         label: draft.categoryId == null
-                            ? 'Categoria requerida'
-                            : (draft.categoryName ?? 'Sin categoria'),
+                            ? l10n.voiceCategoryRequired
+                            : (draft.categoryName ?? l10n.voiceNoCategorySelected),
                         isError: draft.categoryId == null,
                       ),
                       const SizedBox(height: 2),
                       _MetaRow(
                         icon: Icons.account_balance_outlined,
                         label: draft.accountId == null
-                            ? 'Cuenta requerida'
-                            : (draft.accountName ?? 'Sin cuenta'),
+                            ? l10n.voiceAccountRequired
+                            : (draft.accountName ?? l10n.voiceNoAccountSelected),
                         isError: draft.accountId == null,
                       ),
                       const SizedBox(height: 2),
@@ -198,14 +200,15 @@ class DraftCardWidget extends StatelessWidget {
     return luminance > 0.4 ? Colors.black87 : Colors.white;
   }
 
-  String _typeLabel(String type) {
+  String _typeLabel(BuildContext context, String type) {
+    final l10n = AppLocalizations.of(context)!;
     switch (type.toUpperCase()) {
       case 'INCOME':
-        return 'Ingreso';
+        return l10n.transactionTypeIncome;
       case 'TRANSFER':
-        return 'Transferencia';
+        return l10n.transactionTypeTransfer;
       default:
-        return 'Gasto';
+        return l10n.transactionTypeExpense;
     }
   }
 }

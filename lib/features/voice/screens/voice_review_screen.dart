@@ -30,13 +30,11 @@ class VoiceReviewScreen extends StatelessWidget {
     return BlocListener<VoiceBloc, VoiceState>(
       listenWhen: (prev, curr) => prev.status != curr.status,
       listener: (context, state) {
+        final l10n = AppLocalizations.of(context)!;
         if (state.status == VoiceStatus.success) {
-          final count = state.savedCount;
           AppSnackBar.showSuccess(
             context,
-            count == 1
-                ? '1 transaccion guardada'
-                : '$count transacciones guardadas',
+            l10n.voiceTransactionsSavedCount(state.savedCount),
           );
           // Pop back to the transactions list; reset bloc for next use.
           Navigator.of(context)
@@ -48,8 +46,8 @@ class VoiceReviewScreen extends StatelessWidget {
         if (state.status == VoiceStatus.error && state.errorMessage != null) {
           AppSnackBar.showError(
             context,
-            state.errorMessage!.resolve(AppLocalizations.of(context)!),
-            actionLabel: state.savedCount > 0 ? null : 'Reintentar',
+            state.errorMessage!.resolve(l10n),
+            actionLabel: state.savedCount > 0 ? null : l10n.retry,
             onAction: state.savedCount > 0
                 ? null
                 : () => context.read<VoiceBloc>().add(
@@ -60,7 +58,7 @@ class VoiceReviewScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Revisar transacciones'),
+          title: Text(AppLocalizations.of(context)!.voiceReviewTitle),
         ),
         body: const _ReviewBody(),
         floatingActionButton: const _ConfirmFab(),
@@ -84,6 +82,7 @@ class _ReviewBody extends StatelessWidget {
         final drafts = state.drafts;
 
         if (drafts.isEmpty) {
+          final l10n = AppLocalizations.of(context)!;
           return Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -95,13 +94,13 @@ class _ReviewBody extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No se encontraron transacciones',
+                  l10n.voiceNoTransactionsFound,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: 8),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Volver a grabar'),
+                  child: Text(l10n.voiceRecordAgain),
                 ),
               ],
             ),
@@ -168,6 +167,7 @@ class _ConfirmFab extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<VoiceBloc, VoiceState>(
       builder: (context, state) {
+        final l10n = AppLocalizations.of(context)!;
         final includedDrafts = state.drafts.where((d) => d.included).toList();
         final includedCount = includedDrafts.length;
         final isBusy = state.status == VoiceStatus.saving;
@@ -204,10 +204,8 @@ class _ConfirmFab extends StatelessWidget {
                     )
                   : Text(
                       !allValid && includedCount > 0
-                          ? 'Completa los campos requeridos'
-                          : includedCount == 1
-                              ? 'Confirmar 1 transaccion'
-                              : 'Confirmar $includedCount transacciones',
+                          ? l10n.voiceCompleteRequiredFields
+                          : l10n.voiceConfirmCount(includedCount),
                     ),
               icon: isBusy ? null : const Icon(Icons.check_rounded),
             ),
@@ -325,6 +323,7 @@ class _DraftEditSheetState extends State<_DraftEditSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return SingleChildScrollView(
       padding: EdgeInsets.only(
@@ -350,7 +349,7 @@ class _DraftEditSheetState extends State<_DraftEditSheet> {
           const SizedBox(height: 20),
 
           Text(
-            'Editar transaccion',
+            l10n.editTransaction,
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w700,
             ),
@@ -367,7 +366,7 @@ class _DraftEditSheetState extends State<_DraftEditSheet> {
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  decoration: const InputDecoration(labelText: 'Monto'),
+                  decoration: InputDecoration(labelText: l10n.amountLabel),
                 ),
               ),
               const SizedBox(width: 12),
@@ -375,8 +374,7 @@ class _DraftEditSheetState extends State<_DraftEditSheet> {
                 flex: 2,
                 child: DropdownButtonFormField<String>(
                   initialValue: _selectedCurrency,
-                  decoration:
-                      const InputDecoration(labelText: 'Moneda'),
+                  decoration: InputDecoration(labelText: l10n.currencyLabel),
                   items: const [
                     DropdownMenuItem(value: 'PEN', child: Text('S/ PEN')),
                     DropdownMenuItem(value: 'USD', child: Text('\$ USD')),
@@ -393,25 +391,24 @@ class _DraftEditSheetState extends State<_DraftEditSheet> {
           TextFormField(
             controller: _merchantCtrl,
             decoration:
-                const InputDecoration(labelText: 'Comercio (opcional)'),
+                InputDecoration(labelText: l10n.merchantLabelExpense),
             textCapitalization: TextCapitalization.words,
           ),
           const SizedBox(height: 16),
 
           TextFormField(
             controller: _descriptionCtrl,
-            decoration:
-                const InputDecoration(labelText: 'Descripcion (opcional)'),
+            decoration: InputDecoration(labelText: l10n.descriptionLabel),
           ),
           const SizedBox(height: 16),
 
           DropdownButtonFormField<String>(
             initialValue: _selectedCategoryId,
-            decoration: const InputDecoration(labelText: 'Categoria'),
+            decoration: InputDecoration(labelText: l10n.categoryLabel),
             items: [
-              const DropdownMenuItem(
+              DropdownMenuItem(
                 value: null,
-                child: Text('Sin categoria'),
+                child: Text(l10n.voiceNoCategorySelected),
               ),
               ...widget.availableCategories.map(
                 (c) => DropdownMenuItem(value: c.id, child: Text(c.name)),
@@ -423,11 +420,11 @@ class _DraftEditSheetState extends State<_DraftEditSheet> {
 
           DropdownButtonFormField<String>(
             initialValue: _selectedAccountId,
-            decoration: const InputDecoration(labelText: 'Cuenta'),
+            decoration: InputDecoration(labelText: l10n.accountLabel),
             items: [
-              const DropdownMenuItem(
+              DropdownMenuItem(
                 value: null,
-                child: Text('Sin cuenta'),
+                child: Text(l10n.voiceNoAccountSelected),
               ),
               ...widget.availableAccounts.map(
                 (a) => DropdownMenuItem(value: a.id, child: Text(a.name)),
@@ -441,9 +438,9 @@ class _DraftEditSheetState extends State<_DraftEditSheet> {
             onTap: _pickDate,
             borderRadius: BorderRadius.circular(12),
             child: InputDecorator(
-              decoration: const InputDecoration(
-                labelText: 'Fecha',
-                suffixIcon: Icon(Icons.calendar_today_outlined, size: 20),
+              decoration: InputDecoration(
+                labelText: l10n.dateLabel,
+                suffixIcon: const Icon(Icons.calendar_today_outlined, size: 20),
               ),
               child: Text(_dateFormat.format(_selectedDate)),
             ),
@@ -452,7 +449,7 @@ class _DraftEditSheetState extends State<_DraftEditSheet> {
 
           if (widget.availableTags.isNotEmpty) ...[
             Text(
-              'Etiquetas',
+              l10n.tagsTitle,
               style: theme.textTheme.labelSmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -521,7 +518,7 @@ class _DraftEditSheetState extends State<_DraftEditSheet> {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text('Guardar cambios'),
+              child: Text(l10n.saveChanges),
             ),
           ),
         ],

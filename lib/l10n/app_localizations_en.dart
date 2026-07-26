@@ -181,6 +181,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseColor => 'Choose color';
 
   @override
+  String get chooseIcon => 'Choose icon';
+
+  @override
   String get creditLimitLabel => 'Credit limit';
 
   @override
@@ -333,6 +336,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get sameAccountError =>
       'Source and destination accounts must be different';
+
+  @override
+  String receivedAmountLabel(String currency) {
+    return 'Received amount ($currency)';
+  }
 
   @override
   String get transactionCreated => 'Transaction created';
@@ -929,4 +937,71 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get someTransactionsFailedToSave =>
       'Some transactions could not be saved.';
+
+  @override
+  String get voiceRecordTitle => 'Voice entry';
+
+  @override
+  String get voiceRecordingStatus => 'Recording... tap to stop';
+
+  @override
+  String get voiceProcessingStatus => 'Processing...';
+
+  @override
+  String get voiceIdleStatus => 'Tap the microphone and describe your expenses';
+
+  @override
+  String get voiceRecordingLabel => 'Recording';
+
+  @override
+  String get voiceTranscribingLabel => 'Transcribing and analyzing...';
+
+  @override
+  String get voiceIdleExample =>
+      'Describe one or more expenses,\nfor example: \"I spent 45 soles at the market\nand 12 on the bus\"';
+
+  @override
+  String get voiceNeedsAccountMessage =>
+      'You need at least one account to use voice entry.';
+
+  @override
+  String get voiceNeedsCategoryMessage =>
+      'You need at least one category to use voice entry.';
+
+  @override
+  String voiceTransactionsSavedCount(int count) {
+    return '$count transaction(s) saved';
+  }
+
+  @override
+  String get voiceReviewTitle => 'Review transactions';
+
+  @override
+  String get voiceNoTransactionsFound => 'No transactions found';
+
+  @override
+  String get voiceRecordAgain => 'Record again';
+
+  @override
+  String get voiceCompleteRequiredFields => 'Complete the required fields';
+
+  @override
+  String voiceConfirmCount(int count) {
+    return 'Confirm $count transaction(s)';
+  }
+
+  @override
+  String get voiceLowConfidenceTooltip => 'Low confidence: review this field';
+
+  @override
+  String get voiceCategoryRequired => 'Category required';
+
+  @override
+  String get voiceAccountRequired => 'Account required';
+
+  @override
+  String get voiceNoCategorySelected => 'No category';
+
+  @override
+  String get voiceNoAccountSelected => 'No account';
 }

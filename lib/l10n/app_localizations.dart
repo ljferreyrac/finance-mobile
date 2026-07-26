@@ -440,6 +440,12 @@ abstract class AppLocalizations {
   /// **'Choose color'**
   String get chooseColor;
 
+  /// No description provided for @chooseIcon.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose icon'**
+  String get chooseIcon;
+
   /// No description provided for @creditLimitLabel.
   ///
   /// In en, this message translates to:
@@ -733,6 +739,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Source and destination accounts must be different'**
   String get sameAccountError;
+
+  /// No description provided for @receivedAmountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Received amount ({currency})'**
+  String receivedAmountLabel(String currency);
 
   /// No description provided for @transactionCreated.
   ///
@@ -1855,6 +1867,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Some transactions could not be saved.'**
   String get someTransactionsFailedToSave;
+
+  /// No description provided for @voiceRecordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice entry'**
+  String get voiceRecordTitle;
+
+  /// No description provided for @voiceRecordingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording... tap to stop'**
+  String get voiceRecordingStatus;
+
+  /// No description provided for @voiceProcessingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get voiceProcessingStatus;
+
+  /// No description provided for @voiceIdleStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the microphone and describe your expenses'**
+  String get voiceIdleStatus;
+
+  /// No description provided for @voiceRecordingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording'**
+  String get voiceRecordingLabel;
+
+  /// No description provided for @voiceTranscribingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Transcribing and analyzing...'**
+  String get voiceTranscribingLabel;
+
+  /// No description provided for @voiceIdleExample.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe one or more expenses,\nfor example: \"I spent 45 soles at the market\nand 12 on the bus\"'**
+  String get voiceIdleExample;
+
+  /// No description provided for @voiceNeedsAccountMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You need at least one account to use voice entry.'**
+  String get voiceNeedsAccountMessage;
+
+  /// No description provided for @voiceNeedsCategoryMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You need at least one category to use voice entry.'**
+  String get voiceNeedsCategoryMessage;
+
+  /// No description provided for @voiceTransactionsSavedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} transaction(s) saved'**
+  String voiceTransactionsSavedCount(int count);
+
+  /// No description provided for @voiceReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review transactions'**
+  String get voiceReviewTitle;
+
+  /// No description provided for @voiceNoTransactionsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions found'**
+  String get voiceNoTransactionsFound;
+
+  /// No description provided for @voiceRecordAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Record again'**
+  String get voiceRecordAgain;
+
+  /// No description provided for @voiceCompleteRequiredFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete the required fields'**
+  String get voiceCompleteRequiredFields;
+
+  /// No description provided for @voiceConfirmCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm {count} transaction(s)'**
+  String voiceConfirmCount(int count);
+
+  /// No description provided for @voiceLowConfidenceTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Low confidence: review this field'**
+  String get voiceLowConfidenceTooltip;
+
+  /// No description provided for @voiceCategoryRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Category required'**
+  String get voiceCategoryRequired;
+
+  /// No description provided for @voiceAccountRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Account required'**
+  String get voiceAccountRequired;
+
+  /// No description provided for @voiceNoCategorySelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No category'**
+  String get voiceNoCategorySelected;
+
+  /// No description provided for @voiceNoAccountSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No account'**
+  String get voiceNoAccountSelected;
 }
 
 class _AppLocalizationsDelegate

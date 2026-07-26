@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:finanzas_ia/l10n/app_localizations.dart';
 
 const List<String> kCategoryPresetIcons = [
   '\u{1F354}', // burger
@@ -49,7 +50,7 @@ class _IconPickerSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Elegir icono',
+              AppLocalizations.of(context)!.chooseIcon,
               style: Theme.of(context)
                   .textTheme
                   .titleMedium

@@ -60,6 +60,7 @@
   "colorLabel": "Color",
   "changeColor": "Change color",
   "chooseColor": "Choose color",
+  "chooseIcon": "Choose icon",
   "creditLimitLabel": "Credit limit",
   "closingDayLabel": "Closing day",
   "dueDayLabel": "Due day",
@@ -121,6 +122,12 @@
   "selectCategoryFirst": "Select a category",
   "selectAccountFirst": "Select an account",
   "sameAccountError": "Source and destination accounts must be different",
+  "receivedAmountLabel": "Received amount ({currency})",
+  "@receivedAmountLabel": {
+    "placeholders": {
+      "currency": { "type": "String" }
+    }
+  },
   "transactionCreated": "Transaction created",
   "transactionUpdated": "Transaction updated",
   "transactionDeleted": "Transaction deleted",
@@ -372,5 +379,36 @@
   "emailAlreadyRegistered": "This email is already registered",
   "micPermissionRequired": "Microphone permission is needed to record audio.",
   "recordingFileNotFound": "The recorded audio file could not be found.",
-  "someTransactionsFailedToSave": "Some transactions could not be saved."
+  "someTransactionsFailedToSave": "Some transactions could not be saved.",
+
+  "voiceRecordTitle": "Voice entry",
+  "voiceRecordingStatus": "Recording... tap to stop",
+  "voiceProcessingStatus": "Processing...",
+  "voiceIdleStatus": "Tap the microphone and describe your expenses",
+  "voiceRecordingLabel": "Recording",
+  "voiceTranscribingLabel": "Transcribing and analyzing...",
+  "voiceIdleExample": "Describe one or more expenses,\nfor example: \"I spent 45 soles at the market\nand 12 on the bus\"",
+  "voiceNeedsAccountMessage": "You need at least one account to use voice entry.",
+  "voiceNeedsCategoryMessage": "You need at least one category to use voice entry.",
+  "voiceTransactionsSavedCount": "{count} transaction(s) saved",
+  "@voiceTransactionsSavedCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "voiceReviewTitle": "Review transactions",
+  "voiceNoTransactionsFound": "No transactions found",
+  "voiceRecordAgain": "Record again",
+  "voiceCompleteRequiredFields": "Complete the required fields",
+  "voiceConfirmCount": "Confirm {count} transaction(s)",
+  "@voiceConfirmCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "voiceLowConfidenceTooltip": "Low confidence: review this field",
+  "voiceCategoryRequired": "Category required",
+  "voiceAccountRequired": "Account required",
+  "voiceNoCategorySelected": "No category",
+  "voiceNoAccountSelected": "No account"
 }

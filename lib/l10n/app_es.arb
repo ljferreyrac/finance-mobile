@@ -60,6 +60,7 @@
   "colorLabel": "Color",
   "changeColor": "Cambiar color",
   "chooseColor": "Elegir color",
+  "chooseIcon": "Elegir icono",
   "creditLimitLabel": "Límite de crédito",
   "closingDayLabel": "Día de cierre",
   "dueDayLabel": "Día de vencimiento",
@@ -121,6 +122,12 @@
   "selectCategoryFirst": "Selecciona una categoría",
   "selectAccountFirst": "Selecciona una cuenta",
   "sameAccountError": "Las cuentas de origen y destino deben ser distintas",
+  "receivedAmountLabel": "Monto recibido ({currency})",
+  "@receivedAmountLabel": {
+    "placeholders": {
+      "currency": { "type": "String" }
+    }
+  },
   "transactionCreated": "Transacción creada",
   "transactionUpdated": "Transacción actualizada",
   "transactionDeleted": "Transacción eliminada",
@@ -372,5 +379,36 @@
   "emailAlreadyRegistered": "Este correo ya esta registrado",
   "micPermissionRequired": "Se necesita permiso de microfono para grabar audio.",
   "recordingFileNotFound": "No se encontro el archivo de audio grabado.",
-  "someTransactionsFailedToSave": "Algunas transacciones no se pudieron guardar."
+  "someTransactionsFailedToSave": "Algunas transacciones no se pudieron guardar.",
+
+  "voiceRecordTitle": "Registrar por voz",
+  "voiceRecordingStatus": "Grabando... toca para detener",
+  "voiceProcessingStatus": "Procesando...",
+  "voiceIdleStatus": "Toca el microfono y describe tus gastos",
+  "voiceRecordingLabel": "Grabando",
+  "voiceTranscribingLabel": "Transcribiendo y analizando...",
+  "voiceIdleExample": "Describe uno o varios gastos,\npor ejemplo: \"Gaste 45 soles en el mercado\ny 12 en el bus\"",
+  "voiceNeedsAccountMessage": "Necesitas al menos una cuenta para usar el registro por voz.",
+  "voiceNeedsCategoryMessage": "Necesitas al menos una categoria para usar el registro por voz.",
+  "voiceTransactionsSavedCount": "{count} transaccion(es) guardada(s)",
+  "@voiceTransactionsSavedCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "voiceReviewTitle": "Revisar transacciones",
+  "voiceNoTransactionsFound": "No se encontraron transacciones",
+  "voiceRecordAgain": "Volver a grabar",
+  "voiceCompleteRequiredFields": "Completa los campos requeridos",
+  "voiceConfirmCount": "Confirmar {count} transaccion(es)",
+  "@voiceConfirmCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "voiceLowConfidenceTooltip": "Confianza baja: revisa este campo",
+  "voiceCategoryRequired": "Categoria requerida",
+  "voiceAccountRequired": "Cuenta requerida",
+  "voiceNoCategorySelected": "Sin categoria",
+  "voiceNoAccountSelected": "Sin cuenta"
 }
