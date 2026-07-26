@@ -770,6 +770,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get onboardingAccountNameRequired => 'Ingresa un nombre';
 
   @override
+  String get onboardingInitialBalanceInvalid => 'Ingresa un monto valido';
+
+  @override
   String get onboardingSavingLabel => 'Guardando...';
 
   @override

@@ -1550,6 +1550,12 @@ abstract class AppLocalizations {
   /// **'Please enter a name'**
   String get onboardingAccountNameRequired;
 
+  /// No description provided for @onboardingInitialBalanceInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid amount'**
+  String get onboardingInitialBalanceInvalid;
+
   /// No description provided for @onboardingSavingLabel.
   ///
   /// In en, this message translates to:
