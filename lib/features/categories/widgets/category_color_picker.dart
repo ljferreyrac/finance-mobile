@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:finanzas_ia/l10n/app_localizations.dart';
 
 const List<String> kCategoryPresetColors = [
   '#16A34A',
@@ -47,7 +48,7 @@ class _ColorPickerSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Elegir color',
+              AppLocalizations.of(context)!.chooseColor,
               style: Theme.of(context)
                   .textTheme
                   .titleMedium

@@ -292,6 +292,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   Future<void> _openNewCategoryDialog() async {
     final nameCtrl = TextEditingController();
     String? selectedColor;
+    final l10n = AppLocalizations.of(context)!;
 
     const presetColors = [
       '#4CAF50', '#2196F3', '#FF5733',
@@ -302,7 +303,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setDialogState) => AlertDialog(
-          title: const Text('Nueva categoria'),
+          title: Text(l10n.newCategory),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,10 +312,10 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
                 controller: nameCtrl,
                 autofocus: true,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: const InputDecoration(labelText: 'Nombre'),
+                decoration: InputDecoration(labelText: l10n.categoryNameLabel),
               ),
               const SizedBox(height: 16),
-              const Text('Color', style: TextStyle(fontSize: 12)),
+              Text(l10n.categoryColorLabel, style: const TextStyle(fontSize: 12)),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -352,11 +353,11 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(false),
-              child: const Text('Cancelar'),
+              child: Text(l10n.cancel),
             ),
             FilledButton(
               onPressed: () => Navigator.of(ctx).pop(true),
-              child: const Text('Crear'),
+              child: Text(l10n.createCategory),
             ),
           ],
         ),
@@ -803,8 +804,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
           TextFormField(
             controller: _receivedAmountController,
             decoration: InputDecoration(
-              labelText:
-                  'Monto recibido (${_selectedToAccount!.currency})',
+              labelText: l10n.receivedAmountLabel(_selectedToAccount!.currency),
               hintText: '0.00',
             ),
             keyboardType:

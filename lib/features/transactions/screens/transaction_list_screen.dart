@@ -223,7 +223,7 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.mic_none_rounded),
-            tooltip: 'Registrar por voz',
+            tooltip: AppLocalizations.of(context)!.voiceRecordTitle,
             onPressed: _checkAndOpenVoice,
           ),
           Padding(
@@ -520,10 +520,11 @@ class _VoiceGuardBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     final message = needsAccount
-        ? 'Necesitas al menos una cuenta para usar el registro por voz.'
-        : 'Necesitas al menos una categoria para usar el registro por voz.';
-    final actionLabel = needsAccount ? 'Crear cuenta' : 'Crear categoria';
+        ? l10n.voiceNeedsAccountMessage
+        : l10n.voiceNeedsCategoryMessage;
+    final actionLabel = needsAccount ? l10n.createAccount : l10n.createCategory;
 
     return Material(
       color: colorScheme.errorContainer,

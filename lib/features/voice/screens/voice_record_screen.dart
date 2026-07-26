@@ -42,17 +42,18 @@ class VoiceRecordScreen extends StatelessWidget {
         }
 
         if (state.status == VoiceStatus.error && state.errorMessage != null) {
+          final l10n = AppLocalizations.of(context)!;
           AppSnackBar.showError(
             context,
-            state.errorMessage!.resolve(AppLocalizations.of(context)!),
-            actionLabel: 'Reintentar',
+            state.errorMessage!.resolve(l10n),
+            actionLabel: l10n.retry,
             onAction: () => context.read<VoiceBloc>().add(const VoiceReset()),
           );
         }
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Registrar por voz'),
+          title: Text(AppLocalizations.of(context)!.voiceRecordTitle),
           leading: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {
@@ -74,6 +75,7 @@ class _VoiceRecordBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<VoiceBloc, VoiceState>(
       builder: (context, state) {
+        final l10n = AppLocalizations.of(context)!;
         final isRecording = state.status == VoiceStatus.recording;
         final isProcessing = state.status == VoiceStatus.processing;
         final isBusy = isProcessing;
@@ -87,10 +89,10 @@ class _VoiceRecordBody extends StatelessWidget {
 
                 Text(
                   isRecording
-                      ? 'Grabando... toca para detener'
+                      ? l10n.voiceRecordingStatus
                       : isProcessing
-                          ? 'Procesando...'
-                          : 'Toca el microfono y describe tus gastos',
+                          ? l10n.voiceProcessingStatus
+                          : l10n.voiceIdleStatus,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
@@ -148,7 +150,7 @@ class _VoiceRecordBody extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text('Cancelar'),
+                    child: Text(l10n.cancel),
                   ),
                 ),
 
@@ -283,7 +285,7 @@ class _RecordingTimerState extends State<_RecordingTimer> {
         ),
         const SizedBox(height: 8),
         Text(
-          'Grabando',
+          AppLocalizations.of(context)!.voiceRecordingLabel,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(context)
                     .colorScheme
@@ -308,7 +310,7 @@ class _ProcessingIndicator extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Text(
-          'Transcribiendo y analizando...',
+          AppLocalizations.of(context)!.voiceTranscribingLabel,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
@@ -322,7 +324,7 @@ class _IdleHint extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Describe uno o varios gastos,\npor ejemplo: "Gaste 45 soles en el mercado\ny 12 en el bus"',
+      AppLocalizations.of(context)!.voiceIdleExample,
       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: Theme.of(context)
                 .colorScheme
