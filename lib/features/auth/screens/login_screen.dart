@@ -107,12 +107,12 @@ class _Header extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 72,
-          height: 72,
-          padding: const EdgeInsets.all(14),
+          width: 84,
+          height: 84,
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: AppColors.navy900,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(22),
           ),
           child: Image.asset('assets/icon/logo_mark.png'),
         ),

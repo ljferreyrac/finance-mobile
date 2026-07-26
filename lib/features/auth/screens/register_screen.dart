@@ -135,12 +135,12 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 56,
-      height: 56,
-      padding: const EdgeInsets.all(11),
+      width: 68,
+      height: 68,
+      padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         color: AppColors.navy900,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(18),
       ),
       child: Image.asset('assets/icon/logo_mark.png'),
     );
