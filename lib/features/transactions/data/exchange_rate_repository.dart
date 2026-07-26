@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../../core/api/dio_client.dart';
 import '../../../shared/models/failure.dart';
+import '../../../shared/utils/dio_error_mapper.dart';
 import '../models/exchange_rate_model.dart';
 
 /// Contract for exchange-rate data access.
@@ -27,27 +28,9 @@ class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
       final response = await _dio.get<Map<String, dynamic>>(_path);
       return ExchangeRateModel.fromJson(response.data!);
     } on DioException catch (e) {
-      throw _mapDioError(e);
+      throw mapDioError(e);
     } catch (e) {
       throw ServerFailure(e.toString());
     }
-  }
-
-  Failure _mapDioError(DioException e) {
-    if (e.type == DioExceptionType.connectionTimeout ||
-        e.type == DioExceptionType.receiveTimeout ||
-        e.type == DioExceptionType.connectionError) {
-      return const NetworkFailure();
-    }
-    final status = e.response?.statusCode;
-    if (status == 401 || status == 403) return const UnauthorizedFailure();
-    if (status == 404) return const NotFoundFailure();
-    final body = e.response?.data;
-    final message = (body is Map)
-        ? ((body['detail'] ?? body['message']) as String? ??
-            e.message ??
-            'Error del servidor')
-        : (e.message ?? 'Error del servidor');
-    return ServerFailure(message, statusCode: status);
   }
 }

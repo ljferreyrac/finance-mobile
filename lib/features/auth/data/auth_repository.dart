@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import '../../../core/services/token_storage.dart';
 import '../../../shared/models/failure.dart';
+import '../../../shared/utils/dio_error_mapper.dart';
 import '../models/auth_model.dart';
 import 'auth_api_service.dart';
 
@@ -101,25 +102,9 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       return await action();
     } on DioException catch (e) {
-      throw _mapDioError(e);
+      throw mapDioError(e);
     } catch (e) {
       throw ServerFailure(e.toString());
     }
-  }
-
-  Failure _mapDioError(DioException e) {
-    if (e.type == DioExceptionType.connectionTimeout ||
-        e.type == DioExceptionType.receiveTimeout ||
-        e.type == DioExceptionType.connectionError) {
-      return const NetworkFailure();
-    }
-    final status = e.response?.statusCode;
-    if (status == 401) return const UnauthorizedFailure();
-    if (status == 403) return const UnauthorizedFailure();
-    if (status == 404) return const NotFoundFailure();
-    final message = e.response?.data?['message'] as String? ??
-        e.message ??
-        'Error del servidor';
-    return ServerFailure(message, statusCode: status);
   }
 }
