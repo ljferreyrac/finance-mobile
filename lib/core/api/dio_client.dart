@@ -49,7 +49,7 @@ class DioClient {
         responseHeader: false,
         responseBody: false,
         error: true,
-        logPrint: (o) => print('[DioClient] $o'),
+        logPrint: (o) => debugPrint('[DioClient] $o'),
       ));
     }
     return dio;
