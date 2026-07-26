@@ -6,6 +6,7 @@ import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 import '../../../core/locale/locale_cubit.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_snack_bar.dart';
 import '../../../shared/utils/localized_message_resolver.dart';
 
@@ -133,14 +134,15 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: Image.asset(
-        'assets/icon/icon.png',
-        width: 56,
-        height: 56,
-        fit: BoxFit.cover,
+    return Container(
+      width: 56,
+      height: 56,
+      padding: const EdgeInsets.all(11),
+      decoration: BoxDecoration(
+        color: AppColors.navy900,
+        borderRadius: BorderRadius.circular(16),
       ),
+      child: Image.asset('assets/icon/logo_mark.png'),
     );
   }
 }
