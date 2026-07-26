@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../../shared/models/failure.dart';
+import '../../../shared/utils/dio_error_mapper.dart';
 import '../models/category_model.dart';
 import 'category_api_service.dart';
 
@@ -80,28 +81,9 @@ class CategoryRepositoryImpl implements CategoryRepository {
     try {
       return await action();
     } on DioException catch (e) {
-      throw _mapDioError(e);
+      throw mapDioError(e);
     } catch (e) {
       throw ServerFailure(e.toString());
     }
-  }
-
-  Failure _mapDioError(DioException e) {
-    if (e.type == DioExceptionType.connectionTimeout ||
-        e.type == DioExceptionType.receiveTimeout ||
-        e.type == DioExceptionType.connectionError) {
-      return const NetworkFailure();
-    }
-    final status = e.response?.statusCode;
-    if (status == 403 || status == 401) return const UnauthorizedFailure();
-    if (status == 404) return const NotFoundFailure();
-    // Spring Boot ProblemDetail uses 'detail'; 409 Conflict messages live there.
-    final body = e.response?.data;
-    final message = (body is Map)
-        ? ((body['detail'] ?? body['message']) as String? ??
-            e.message ??
-            'Error del servidor')
-        : (e.message ?? 'Error del servidor');
-    return ServerFailure(message, statusCode: status);
   }
 }
