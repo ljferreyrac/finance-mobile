@@ -105,15 +105,14 @@ class _Header extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
-        Container(
-          width: 72,
-          height: 72,
-          decoration: BoxDecoration(
-            color: colorScheme.primary,
-            borderRadius: BorderRadius.circular(20),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Image.asset(
+            'assets/icon/icon.png',
+            width: 72,
+            height: 72,
+            fit: BoxFit.cover,
           ),
-          child: const Icon(Icons.account_balance_wallet,
-              color: Colors.white, size: 36),
         ),
         const SizedBox(height: 20),
         Text(
