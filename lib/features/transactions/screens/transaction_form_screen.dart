@@ -22,6 +22,8 @@ import '../data/exchange_rate_repository.dart';
 import '../models/exchange_rate_model.dart';
 import '../models/tag_model.dart';
 import '../models/transaction_model.dart';
+import '../widgets/account_picker_sheet.dart';
+import '../widgets/category_picker_sheet.dart';
 import '../widgets/tag_chip.dart';
 import '../widgets/tag_picker_sheet.dart';
 import '../../../core/widgets/app_snack_bar.dart';
@@ -282,13 +284,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
     required List<AccountModel> accounts,
     required void Function(AccountModel) onSelected,
   }) async {
-    final picked = await showModalBottomSheet<AccountModel>(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (_) => _AccountPickerSheet(accounts: accounts),
-    );
+    final picked = await showAccountPickerSheet(context, accounts: accounts);
     if (picked != null) onSelected(picked);
   }
 
@@ -381,18 +377,13 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   Future<void> _pickCategory({
     required List<CategoryModel> categories,
   }) async {
-    final picked = await showModalBottomSheet<CategoryModel>(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (_) => _CategoryPickerSheet(
-        categories: categories,
-        onNewCategory: () {
-          Navigator.of(context).pop();
-          _openNewCategoryDialog();
-        },
-      ),
+    final picked = await showCategoryPickerSheet(
+      context,
+      categories: categories,
+      onNewCategory: () {
+        Navigator.of(context).pop();
+        _openNewCategoryDialog();
+      },
     );
     if (picked != null) {
       setState(() => _selectedCategory = picked);
@@ -958,172 +949,3 @@ class _PickerField extends StatelessWidget {
   }
 }
 
-class _AccountPickerSheet extends StatelessWidget {
-  const _AccountPickerSheet({required this.accounts});
-
-  final List<AccountModel> accounts;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return SafeArea(
-      bottom: false,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24, 20, 24, 8),
-            child: Text(
-              AppLocalizations.of(context)!.selectAccount,
-              style: textTheme.titleMedium
-                  ?.copyWith(fontWeight: FontWeight.w600),
-            ),
-          ),
-          if (accounts.isEmpty)
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Text(
-                AppLocalizations.of(context)!.noAccountsAvailable,
-                style: textTheme.bodyMedium?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                ),
-              ),
-            )
-          else
-            Flexible(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: accounts.length,
-                itemBuilder: (_, i) {
-                  final account = accounts[i];
-                  return ListTile(
-                    leading: Icon(account.type.icon,
-                        color: colorScheme.primary),
-                    title: Text(account.name),
-                    subtitle: Text(
-                      '${account.currency}  '
-                      '${account.bank ?? account.type.label}',
-                    ),
-                    trailing: Text(
-                      _formatBalance(account),
-                      style: textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    onTap: () => Navigator.of(context).pop(account),
-                  );
-                },
-              ),
-            ),
-          const SizedBox(height: 8),
-        ],
-      ),
-    );
-  }
-
-  String _formatBalance(AccountModel account) {
-    final sign = account.currentBalance < 0 ? '' : '';
-    return '$sign${account.currency} ${account.currentBalance.abs().toStringAsFixed(2)}';
-  }
-}
-
-class _CategoryPickerSheet extends StatelessWidget {
-  const _CategoryPickerSheet({
-    required this.categories,
-    required this.onNewCategory,
-  });
-
-  final List<CategoryModel> categories;
-  final VoidCallback onNewCategory;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return SafeArea(
-      bottom: false,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24, 20, 24, 8),
-            child: Text(
-              AppLocalizations.of(context)!.selectCategory,
-              style: textTheme.titleMedium
-                  ?.copyWith(fontWeight: FontWeight.w600),
-            ),
-          ),
-          if (categories.isEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-              child: Text(
-                AppLocalizations.of(context)!.noCategoriesAvailable,
-                style: textTheme.bodyMedium?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                ),
-              ),
-            )
-          else
-            Flexible(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: categories.length,
-                itemBuilder: (_, i) {
-                  final category = categories[i];
-                  final color = category.color != null
-                      ? Color(
-                          int.parse(
-                            category.color!.replaceAll('#', '0xFF'),
-                          ),
-                        )
-                      : colorScheme.primary;
-
-                  return ListTile(
-                    leading: Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: color,
-                        shape: BoxShape.circle,
-                      ),
-                      alignment: Alignment.center,
-                      child: category.icon != null
-                          ? Text(category.icon!,
-                              style: const TextStyle(fontSize: 16))
-                          : Text(
-                              category.name[0].toUpperCase(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                    ),
-                    title: Text(category.name),
-                    onTap: () => Navigator.of(context).pop(category),
-                  );
-                },
-              ),
-            ),
-          const Divider(height: 1),
-          ListTile(
-            leading: Icon(Icons.add, color: colorScheme.primary),
-            title: Text(
-              AppLocalizations.of(context)!.newCategory,
-              style: textTheme.bodyMedium?.copyWith(
-                color: colorScheme.primary,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            onTap: onNewCategory,
-          ),
-          const SizedBox(height: 8),
-        ],
-      ),
-    );
-  }
-}
