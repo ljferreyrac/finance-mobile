@@ -79,6 +79,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    const Center(child: _Header()),
+                    const SizedBox(height: 24),
                     _FullNameField(
                         controller: _fullNameController, enabled: !isLoading),
                     const SizedBox(height: 16),
@@ -122,6 +124,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         );
       },
+    );
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header();
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: Image.asset(
+        'assets/icon/icon.png',
+        width: 56,
+        height: 56,
+        fit: BoxFit.cover,
+      ),
     );
   }
 }
