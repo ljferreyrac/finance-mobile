@@ -7,6 +7,7 @@ import 'package:finanzas_ia/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 import 'core/locale/locale_cubit.dart';
+import 'core/theme/app_colors.dart';
 import 'core/theme/app_theme.dart';
 import 'features/onboarding/screens/onboarding_wrapper.dart';
 import 'core/api/dio_client.dart';
@@ -94,8 +95,13 @@ class _FinanzasAppState extends State<FinanzasApp> {
       routes: [
         GoRoute(
           path: '/',
+          // Matches the native launch splash (navy background, teal spinner)
+          // so there is no white flash between it and the first real screen.
           builder: (_, __) => const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            backgroundColor: AppColors.navy900,
+            body: Center(
+              child: CircularProgressIndicator(color: AppColors.teal400),
+            ),
           ),
         ),
         GoRoute(
