@@ -110,7 +110,7 @@ def build_full_icon():
     # Android's launcher_icons tool also derives its own rounded/circle/
     # legacy variants from this master.
     img = Image.new("RGBA", (SIZE, SIZE), NAVY_900)
-    mark = _mark_layer(SIZE * 0.20)
+    mark = _mark_layer(SIZE * 0.27)
     img.alpha_composite(mark)
     return img.convert("RGB")
 
@@ -118,7 +118,7 @@ def build_full_icon():
 def build_foreground():
     # Adaptive icons get center-cropped to a circle/squircle by the OS, so
     # keep the mark within the inner ~66% safe zone on a transparent canvas.
-    return _mark_layer(SIZE * 0.145)
+    return _mark_layer(SIZE * 0.17)
 
 
 def build_logo_mark():
@@ -127,7 +127,7 @@ def build_logo_mark():
     # one is for in-app display, not a launcher icon.
     layer = _mark_layer(SIZE * 0.36)
     bbox = layer.getbbox()
-    pad = int((bbox[2] - bbox[0]) * 0.08)
+    pad = int((bbox[2] - bbox[0]) * 0.03)
     left, top, right, bottom = bbox
     left -= pad
     top -= pad
