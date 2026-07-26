@@ -110,7 +110,7 @@ def build_full_icon():
     # Android's launcher_icons tool also derives its own rounded/circle/
     # legacy variants from this master.
     img = Image.new("RGBA", (SIZE, SIZE), NAVY_900)
-    mark = _mark_layer(SIZE * 0.27)
+    mark = _mark_layer(SIZE * 0.34)
     img.alpha_composite(mark)
     return img.convert("RGB")
 
@@ -118,31 +118,37 @@ def build_full_icon():
 def build_foreground():
     # Adaptive icons get center-cropped to a circle/squircle by the OS, so
     # keep the mark within the inner ~66% safe zone on a transparent canvas.
-    return _mark_layer(SIZE * 0.17)
+    # NOTE: mipmap-anydpi-v26/ic_launcher.xml also insets this drawable by
+    # 16% (Android's official adaptive-icon safe-zone margin) before the OS
+    # applies its own mask. That means the true safe radius in THIS image's
+    # own coordinate space is ~45% of the canvas, not 33% - using 33% here
+    # would double-apply the same margin and draw the mark unnecessarily
+    # small. Verify with generate_icon.py's __main__ safe-zone check after
+    # any change here.
+    return _mark_layer(SIZE * 0.22)
 
 
 def build_logo_mark():
-    # Same mark, drawn larger and then cropped tight to its own content
-    # (plus a small margin) instead of padded to an OS safe zone - this
+    # Same mark, cropped tight instead of padded to an OS safe zone - this
     # one is for in-app display, not a launcher icon.
+    #
+    # Crucially, this crop stays centered on the CANVAS center (SIZE/2,
+    # SIZE/2), which is where _mark_layer draws the wallet - not on the
+    # wallet+spark combined content bbox. Centering on the combined bbox
+    # (an earlier bug) pulls the crop toward the spark, since the spark
+    # sticks out past the wallet on one side only; the wallet - the shape
+    # people actually anchor on - then reads as off-center even though the
+    # bbox math is "correct". Sizing the crop from the *maximum* distance
+    # from canvas center to any content edge guarantees nothing is cut off
+    # while preserving that centering.
     layer = _mark_layer(SIZE * 0.36)
     bbox = layer.getbbox()
-    pad = int((bbox[2] - bbox[0]) * 0.03)
-    left, top, right, bottom = bbox
-    left -= pad
-    top -= pad
-    right += pad
-    bottom += pad
-    # Pad to a centered square canvas so the asset displays predictably
-    # regardless of the wallet's own (wider-than-tall) aspect ratio.
-    w, h = right - left, bottom - top
-    side = max(w, h)
-    cx, cy = (left + right) / 2, (top + bottom) / 2
-    square = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
-    square.paste(layer, (0, 0), layer)
-    return square.crop((
-        int(cx - side / 2), int(cy - side / 2),
-        int(cx + side / 2), int(cy + side / 2),
+    cx, cy = SIZE / 2, SIZE / 2
+    half_side = max(cx - bbox[0], bbox[2] - cx, cy - bbox[1], bbox[3] - cy)
+    half_side *= 1.06  # small breathing room
+    return layer.crop((
+        int(cx - half_side), int(cy - half_side),
+        int(cx + half_side), int(cy + half_side),
     ))
 
 
@@ -150,11 +156,32 @@ def downsample_save(img, path, size=1024):
     img.resize((size, size), Image.LANCZOS).save(path)
 
 
+def _check_foreground_safe_zone(fg_path, size=1024):
+    """Prints the foreground mark's max distance from canvas center against
+    the effective safe radius, accounting for the 16% inset applied in
+    mipmap-anydpi-v26/ic_launcher.xml (see build_foreground's docstring)."""
+    import math
+
+    img = Image.open(fg_path)
+    bbox = img.getbbox()
+    cx, cy = size / 2, size / 2
+    corners = [(bbox[0], bbox[1]), (bbox[2], bbox[1]), (bbox[0], bbox[3]), (bbox[2], bbox[3])]
+    maxd = max(math.hypot(x - cx, y - cy) for x, y in corners)
+    effective_safe_radius = (33 / (108 * 0.68)) * size
+    status = "OK" if maxd <= effective_safe_radius else "TOO BIG - will clip on some launchers"
+    print(f"  foreground safe-zone check: maxdist={maxd:.1f} vs "
+          f"effective_safe_radius={effective_safe_radius:.1f}  [{status}]")
+
+
 if __name__ == "__main__":
     import os
 
     out_dir = os.path.dirname(os.path.abspath(__file__))
-    downsample_save(build_full_icon(), os.path.join(out_dir, "icon.png"))
-    downsample_save(build_foreground(), os.path.join(out_dir, "icon_foreground.png"))
-    downsample_save(build_logo_mark(), os.path.join(out_dir, "logo_mark.png"))
+    icon_path = os.path.join(out_dir, "icon.png")
+    fg_path = os.path.join(out_dir, "icon_foreground.png")
+    mark_path = os.path.join(out_dir, "logo_mark.png")
+    downsample_save(build_full_icon(), icon_path)
+    downsample_save(build_foreground(), fg_path)
+    downsample_save(build_logo_mark(), mark_path)
     print("wrote icon.png, icon_foreground.png, and logo_mark.png")
+    _check_foreground_safe_zone(fg_path)
