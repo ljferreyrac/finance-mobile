@@ -251,13 +251,11 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
     }
   }
 
+  // Transfer currency is set when picking the from-account (below); for
+  // other types the currency the user already chose is left untouched.
   void _onTypeChanged(TransactionType type) {
     setState(() {
       _type = type;
-      // Transfer currency is set when picking the from-account (below); for
-      // other types the currency the user already chose is left untouched.
-      if (type != TransactionType.transfer) {
-      }
     });
   }
 
