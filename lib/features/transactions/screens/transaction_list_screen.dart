@@ -7,10 +7,12 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_snack_bar.dart';
 
 import '../../accounts/bloc/account_bloc.dart';
-import '../../accounts/data/account_repository.dart';
+import '../../accounts/bloc/account_event.dart';
+import '../../accounts/bloc/account_state.dart';
 import '../../accounts/screens/account_form_screen.dart';
 import '../../categories/bloc/category_bloc.dart';
-import '../../categories/data/category_repository.dart';
+import '../../categories/bloc/category_event.dart';
+import '../../categories/bloc/category_state.dart';
 import '../../categories/screens/category_form_screen.dart';
 import '../bloc/tag_bloc.dart';
 import '../bloc/transaction_bloc.dart';
@@ -110,15 +112,47 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
     }
   }
 
+  void _showVoiceGuardLoadError() {
+    AppSnackBar.showError(
+      context,
+      AppLocalizations.of(context)!.onboardingGenericError,
+      actionLabel: AppLocalizations.of(context)!.retry,
+      onAction: _checkAndOpenVoice,
+    );
+  }
+
   Future<void> _checkAndOpenVoice() async {
-    final results = await Future.wait([
-      AccountRepositoryImpl().getAccounts(),
-      CategoryRepositoryImpl().listCategories(),
-    ]);
-    final accounts = results[0];
-    final categories = results[1];
+    final accountBloc = context.read<AccountBloc>();
+    final categoryBloc = context.read<CategoryBloc>();
+    accountBloc.add(const LoadAccounts());
+    categoryBloc.add(const LoadCategories());
+
+    final List<Object> states;
+    try {
+      states = await Future.wait([
+        accountBloc.stream.firstWhere(
+          (s) => s is AccountLoaded || s is AccountError,
+        ),
+        categoryBloc.stream.firstWhere(
+          (s) => s is CategoryLoaded || s is CategoryError,
+        ),
+      ]);
+    } catch (_) {
+      if (mounted) _showVoiceGuardLoadError();
+      return;
+    }
 
     if (!mounted) return;
+
+    final accountState = states[0];
+    final categoryState = states[1];
+    if (accountState is AccountError || categoryState is CategoryError) {
+      _showVoiceGuardLoadError();
+      return;
+    }
+
+    final accounts = (accountState as AccountLoaded).accounts;
+    final categories = (categoryState as CategoryLoaded).categories;
 
     if (accounts.isEmpty) {
       setState(() {

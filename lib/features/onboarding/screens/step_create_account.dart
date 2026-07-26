@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finanzas_ia/l10n/app_localizations.dart';
 
 import '../../../core/theme/app_colors.dart';
-import '../../../features/accounts/data/account_repository.dart';
+import '../../../features/accounts/bloc/account_bloc.dart';
+import '../../../features/accounts/bloc/account_event.dart';
+import '../../../features/accounts/bloc/account_state.dart';
 import '../../../features/accounts/models/account_model.dart';
-import '../../../shared/models/failure.dart';
 
 /// Step 1 of onboarding: create at least one financial account.
 ///
 /// The "Continue" button is disabled until at least one account has been saved.
 /// The last remaining account cannot be deleted.
+///
+/// [AccountBloc] must be provided above this widget.
 class StepCreateAccount extends StatefulWidget {
   const StepCreateAccount({super.key, required this.onComplete});
 
@@ -34,23 +38,13 @@ class _StepCreateAccountState extends State<StepCreateAccount> {
   String? _error;
   List<AccountModel> _accounts = [];
 
-  final _repository = AccountRepositoryImpl();
+  /// Which mutation is in flight, since [AccountLoading] alone doesn't say.
+  String? _pendingAction;
 
   @override
   void initState() {
     super.initState();
-    _loadExistingAccounts();
-  }
-
-  Future<void> _loadExistingAccounts() async {
-    try {
-      final existing = await _repository.getAccounts();
-      if (mounted) setState(() => _accounts = existing);
-    } catch (_) {
-      // Non-fatal: start with empty list if the fetch fails.
-    } finally {
-      if (mounted) setState(() => _isLoadingExisting = false);
-    }
+    context.read<AccountBloc>().add(const LoadAccounts());
   }
 
   @override
@@ -60,49 +54,74 @@ class _StepCreateAccountState extends State<StepCreateAccount> {
     super.dispose();
   }
 
-  Future<void> _addAccount() async {
+  void _addAccount() {
     if (!_formKey.currentState!.validate()) return;
     setState(() {
-      _isSaving = true;
       _error = null;
+      _pendingAction = 'create';
     });
-    try {
-      final account = await _repository.createAccount({
-        'name': _nameController.text.trim(),
-        'type': _type.toJson(),
-        'currency': _currency,
-        'initialBalance':
-            double.tryParse(_balanceController.text.trim()) ?? 0.0,
-        'isDefault': _accounts.isEmpty,
-      });
-      setState(() {
-        _accounts = [..._accounts, account];
-        _nameController.clear();
-        _balanceController.clear();
-        _type = AccountType.bank;
-        _currency = 'PEN';
-      });
-    } on Failure catch (f) {
-      setState(() => _error = f.message);
-    } catch (e) {
-      setState(() =>
-          _error = AppLocalizations.of(context)!.onboardingGenericError);
-    } finally {
-      setState(() => _isSaving = false);
-    }
+    context.read<AccountBloc>().add(CreateAccount({
+          'name': _nameController.text.trim(),
+          'type': _type.toJson(),
+          'currency': _currency,
+          'initialBalance':
+              double.tryParse(_balanceController.text.trim()) ?? 0.0,
+          'isDefault': _accounts.isEmpty,
+        }));
   }
 
-  Future<void> _deleteAccount(AccountModel account) async {
+  void _deleteAccount(AccountModel account) {
     if (_accounts.length <= 1) return;
-    setState(() => _isDeleting = true);
-    try {
-      await _repository.deleteAccount(account.id);
-      setState(
-          () => _accounts = _accounts.where((a) => a.id != account.id).toList());
-    } catch (_) {
-      // Ignored: the account stays in the list on failure.
-    } finally {
-      setState(() => _isDeleting = false);
+    setState(() => _pendingAction = 'delete');
+    context.read<AccountBloc>().add(DeleteAccount(account.id));
+  }
+
+  void _handleAccountState(AccountState state) {
+    if (state is AccountLoading) {
+      // The very first LoadAccounts also emits this; don't flip the button
+      // spinners for it, only for a mutation triggered after that.
+      if (!_isLoadingExisting) {
+        setState(() {
+          _isSaving = _pendingAction == 'create';
+          _isDeleting = _pendingAction == 'delete';
+        });
+      }
+      return;
+    }
+    if (state is AccountLoaded) {
+      setState(() {
+        _accounts = state.accounts;
+        _isLoadingExisting = false;
+        _isSaving = false;
+        _isDeleting = false;
+      });
+      return;
+    }
+    if (state is AccountOperationSuccess) {
+      final wasCreate = _pendingAction == 'create';
+      setState(() {
+        _accounts = state.accounts;
+        _isLoadingExisting = false;
+        _isSaving = false;
+        _isDeleting = false;
+        _pendingAction = null;
+        if (wasCreate) {
+          _nameController.clear();
+          _balanceController.clear();
+          _type = AccountType.bank;
+          _currency = 'PEN';
+        }
+      });
+      return;
+    }
+    if (state is AccountError) {
+      setState(() {
+        _isLoadingExisting = false;
+        _isSaving = false;
+        _isDeleting = false;
+        _pendingAction = null;
+        _error = state.message;
+      });
     }
   }
 
@@ -112,10 +131,20 @@ class _StepCreateAccountState extends State<StepCreateAccount> {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    if (_isLoadingExisting) {
-      return const Center(child: CircularProgressIndicator());
-    }
+    return BlocListener<AccountBloc, AccountState>(
+      listener: (context, state) => _handleAccountState(state),
+      child: _isLoadingExisting
+          ? const Center(child: CircularProgressIndicator())
+          : _buildForm(context, l10n, textTheme, colorScheme),
+    );
+  }
 
+  Widget _buildForm(
+    BuildContext context,
+    AppLocalizations l10n,
+    TextTheme textTheme,
+    ColorScheme colorScheme,
+  ) {
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
       child: Form(

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finanzas_ia/l10n/app_localizations.dart';
 
 import '../../../core/theme/app_colors.dart';
-import '../../../features/categories/data/category_repository.dart';
+import '../../../features/categories/bloc/category_bloc.dart';
+import '../../../features/categories/bloc/category_event.dart';
+import '../../../features/categories/bloc/category_state.dart';
 import '../../../features/categories/widgets/category_color_picker.dart';
 
 enum _Group { expense, income }
@@ -59,6 +62,8 @@ const _kEmojiOptions = [
 ///
 /// All presets are pre-selected. The user can toggle them and add custom ones.
 /// The "Finish" button is disabled until at least one category is selected.
+///
+/// [CategoryBloc] must be provided above this widget.
 class StepCreateCategories extends StatefulWidget {
   const StepCreateCategories({super.key, required this.onComplete});
 
@@ -81,39 +86,67 @@ class _StepCreateCategoriesState extends State<StepCreateCategories> {
   bool _isSaving = false;
   String? _error;
 
-  final _repository = CategoryRepositoryImpl();
-
   bool get _hasSelection =>
       (_presets?.any((p) => p.selected) ?? false) || _customs.isNotEmpty;
+
+  /// Dispatches [CreateCategory] and waits for its terminal state, so the
+  /// preset/custom loop below stays sequential (matching the previous
+  /// awaited-repository-call behaviour) instead of racing concurrent bloc
+  /// events.
+  Future<bool> _createCategory(
+    CategoryBloc bloc, {
+    required String name,
+    String? icon,
+    String? color,
+    required bool isDefault,
+  }) async {
+    bloc.add(CreateCategory(
+      name: name,
+      icon: icon,
+      color: color,
+      isDefault: isDefault,
+    ));
+    final state = await bloc.stream.firstWhere(
+      (s) => s is CategoryActionSuccess || s is CategoryError,
+    );
+    return state is CategoryActionSuccess;
+  }
 
   Future<void> _finish() async {
     setState(() {
       _isSaving = true;
       _error = null;
     });
+    final bloc = context.read<CategoryBloc>();
     try {
       int position = 0;
       for (final p in (_presets ?? []).where((p) => p.selected)) {
-        await _repository.createCategory(
+        final ok = await _createCategory(
+          bloc,
           name: p.name,
           icon: p.icon,
           color: p.color,
           isDefault: position == 0,
         );
+        if (!ok) throw StateError('createCategory failed for "${p.name}"');
         position++;
       }
       for (final c in _customs) {
-        await _repository.createCategory(
+        final ok = await _createCategory(
+          bloc,
           name: c.name,
           icon: c.icon,
           color: c.color,
           isDefault: false,
         );
+        if (!ok) throw StateError('createCategory failed for "${c.name}"');
       }
       widget.onComplete();
     } catch (e) {
-      setState(() =>
-          _error = AppLocalizations.of(context)!.onboardingCategoriesError);
+      if (mounted) {
+        setState(() =>
+            _error = AppLocalizations.of(context)!.onboardingCategoriesError);
+      }
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }

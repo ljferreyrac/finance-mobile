@@ -14,6 +14,7 @@ import '../../categories/models/category_model.dart';
 import '../bloc/tag_bloc.dart';
 import '../bloc/tag_event.dart';
 import '../bloc/tag_state.dart';
+import '../bloc/exchange_rate_cubit.dart';
 import '../bloc/transaction_bloc.dart';
 import '../bloc/transaction_event.dart';
 import '../bloc/transaction_state.dart';
@@ -72,6 +73,10 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   /// Today's exchange rate, loaded lazily the first time it is needed.
   ExchangeRateModel? _exchangeRate;
 
+  /// Owned by this screen; nothing else in the widget tree needs it, so it
+  /// is not provided via [BlocProvider].
+  late final ExchangeRateCubit _exchangeRateCubit;
+
   /// Prevents auto-prefill from overwriting a value the user has already typed.
   bool _amountLocalUserEdited = false;
 
@@ -84,6 +89,9 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   @override
   void initState() {
     super.initState();
+
+    _exchangeRateCubit =
+        ExchangeRateCubit(repository: ExchangeRateRepositoryImpl());
 
     final accountState = context.read<AccountBloc>().state;
     if (accountState is AccountInitial) {
@@ -196,6 +204,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
     _descriptionController.dispose();
     _amountLocalController.dispose();
     _receivedAmountController.dispose();
+    _exchangeRateCubit.close();
     super.dispose();
   }
 
@@ -229,15 +238,12 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   Future<void> _loadExchangeRateAndPrefill() async {
     if (_amountLocalUserEdited) return;
 
-    ExchangeRateModel? rate = _exchangeRate;
+    var rate = _exchangeRate;
     if (rate == null) {
-      try {
-        rate = await ExchangeRateRepositoryImpl().getToday();
-        if (mounted) setState(() => _exchangeRate = rate);
-      } catch (_) {
-        // Non-fatal: field stays empty, user enters the value manually.
-        return;
-      }
+      await _exchangeRateCubit.loadToday();
+      rate = _exchangeRateCubit.state;
+      if (rate == null) return; // fetch failed; user enters the value manually
+      if (mounted) setState(() => _exchangeRate = rate);
     }
 
     if (!mounted || _amountLocalUserEdited) return;
