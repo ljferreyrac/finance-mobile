@@ -157,6 +157,7 @@ class _AccountsScreenState extends State<AccountsScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'accounts_fab',
         onPressed: () => _openForm(),
         tooltip: l10n.newAccount,
         child: const Icon(Icons.add),

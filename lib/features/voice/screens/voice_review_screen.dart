@@ -181,6 +181,7 @@ class _ConfirmFab extends StatelessWidget {
           child: SizedBox(
             width: double.infinity,
             child: FloatingActionButton.extended(
+              heroTag: 'voice_confirm_fab',
               onPressed: canConfirm
                   ? () => context
                       .read<VoiceBloc>()
