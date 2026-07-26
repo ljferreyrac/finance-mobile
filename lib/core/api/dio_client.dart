@@ -113,8 +113,10 @@ class _AuthInterceptor extends Interceptor {
     ErrorInterceptorHandler handler,
   ) async {
     final status = err.response?.statusCode;
-    // Only intercept 401/403 (Spring Security can return either for unauth).
-    if (status != 401 && status != 403) {
+    // Only intercept 401. The backend's 403 means an authenticated user
+    // hitting a resource they don't own (UnauthorizedAccessException), not
+    // an expired token - refreshing would just burn a rotation for nothing.
+    if (status != 401) {
       handler.next(err);
       return;
     }
@@ -129,8 +131,9 @@ class _AuthInterceptor extends Interceptor {
         try {
           final retryResponse = await _mainDio.fetch(err.requestOptions);
           handler.resolve(retryResponse);
-        } catch (_) {
-          handler.next(err);
+        } on DioException catch (retryErr) {
+          // Surface the retry's own failure, not the stale original 401.
+          handler.next(retryErr);
         }
       } catch (_) {
         // Refresh failed; session already expired by the leading request.
@@ -188,9 +191,10 @@ class _AuthInterceptor extends Interceptor {
       try {
         final retryResponse = await _mainDio.fetch(err.requestOptions);
         handler.resolve(retryResponse);
-      } catch (_) {
-        // Retry failed for a non-auth reason; do NOT expire the session.
-        handler.next(err);
+      } on DioException catch (retryErr) {
+        // Retry failed for a non-auth reason; do NOT expire the session, and
+        // surface the retry's own failure rather than the stale original 401.
+        handler.next(retryErr);
       }
     } finally {
       _isRefreshing = false;
