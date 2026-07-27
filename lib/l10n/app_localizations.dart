@@ -1751,13 +1751,13 @@ abstract class AppLocalizations {
   /// No description provided for @emptyTransactionsHint.
   ///
   /// In en, this message translates to:
-  /// **'Tap + to record your first transaction, or try the microphone for voice entry.'**
+  /// **'Say what you spent or received, and it\'s logged in seconds.'**
   String get emptyTransactionsHint;
 
   /// No description provided for @emptyExpensesHint.
   ///
   /// In en, this message translates to:
-  /// **'Record an expense with the + button or say what you spent by voice.'**
+  /// **'Just say what you bought and it\'s logged in seconds.'**
   String get emptyExpensesHint;
 
   /// No description provided for @emptyIncomeHint.

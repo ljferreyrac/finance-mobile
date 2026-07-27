@@ -872,11 +872,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emptyTransactionsHint =>
-      'Tap + to record your first transaction, or try the microphone for voice entry.';
+      'Say what you spent or received, and it\'s logged in seconds.';
 
   @override
   String get emptyExpensesHint =>
-      'Record an expense with the + button or say what you spent by voice.';
+      'Just say what you bought and it\'s logged in seconds.';
 
   @override
   String get emptyIncomeHint =>

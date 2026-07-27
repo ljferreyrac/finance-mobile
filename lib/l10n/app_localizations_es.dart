@@ -875,11 +875,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get emptyTransactionsHint =>
-      'Usa el boton + para registrar tu primer movimiento, o prueba el microfono para hacerlo por voz.';
+      'Di lo que gastaste o recibiste, y quedara registrado en segundos.';
 
   @override
   String get emptyExpensesHint =>
-      'Registra un gasto con el boton + o di lo que gastaste por voz.';
+      'Solo di que compraste y quedara registrado en segundos.';
 
   @override
   String get emptyIncomeHint =>

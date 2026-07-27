@@ -357,8 +357,8 @@
   "onboardingIconSectionLabel": "Icon",
   "onboardingAddButton": "Add",
 
-  "emptyTransactionsHint": "Tap + to record your first transaction, or try the microphone for voice entry.",
-  "emptyExpensesHint": "Record an expense with the + button or say what you spent by voice.",
+  "emptyTransactionsHint": "Say what you spent or received, and it's logged in seconds.",
+  "emptyExpensesHint": "Just say what you bought and it's logged in seconds.",
   "emptyIncomeHint": "Add income whenever you receive money — salary, freelance, anything.",
   "emptyTransfersHint": "Transfers between your accounts will appear here.",
 

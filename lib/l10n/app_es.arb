@@ -357,8 +357,8 @@
   "onboardingIconSectionLabel": "Icono",
   "onboardingAddButton": "Agregar",
 
-  "emptyTransactionsHint": "Usa el boton + para registrar tu primer movimiento, o prueba el microfono para hacerlo por voz.",
-  "emptyExpensesHint": "Registra un gasto con el boton + o di lo que gastaste por voz.",
+  "emptyTransactionsHint": "Di lo que gastaste o recibiste, y quedara registrado en segundos.",
+  "emptyExpensesHint": "Solo di que compraste y quedara registrado en segundos.",
   "emptyIncomeHint": "Agrega un ingreso cuando recibas dinero: sueldo, freelance, lo que sea.",
   "emptyTransfersHint": "Las transferencias entre tus cuentas apareceran aqui.",
 
