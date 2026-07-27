@@ -753,10 +753,13 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get onboardingStep1StepLabel => 'Paso 1 de 2 - Cuentas';
+  String get onboardingStep1StepLabel => 'Paso 1 de 3 - Cuentas';
 
   @override
-  String get onboardingStep2StepLabel => 'Paso 2 de 2 - Categorias';
+  String get onboardingStep2StepLabel => 'Paso 2 de 3 - Categorias';
+
+  @override
+  String get onboardingStep3StepLabel => 'Paso 3 de 3 - Pruebalo';
 
   @override
   String get onboardingStep1Title => 'Agrega tus cuentas';
@@ -818,6 +821,19 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get onboardingCategoriesError =>
       'No se pudieron guardar las categorias. Intenta de nuevo.';
+
+  @override
+  String get onboardingStep3Title => 'Pruebalo tu mismo';
+
+  @override
+  String get onboardingStep3Subtitle =>
+      'Registra tu primer gasto hablando. Esta es la forma mas rapida de usar Solvi.';
+
+  @override
+  String get onboardingTryVoiceButton => 'Probar ahora';
+
+  @override
+  String get onboardingSkipVoiceButton => 'Ahora no';
 
   @override
   String get catFood => 'Comida';

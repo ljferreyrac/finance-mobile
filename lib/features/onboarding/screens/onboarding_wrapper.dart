@@ -14,8 +14,10 @@ import '../../../features/auth/bloc/auth_event.dart';
 import '../widgets/step_indicator.dart';
 import 'step_create_account.dart';
 import 'step_create_categories.dart';
+import 'step_try_voice.dart';
 
-/// Hosts the two-step onboarding flow: accounts then categories.
+/// Hosts the three-step onboarding flow: accounts, then categories, then a
+/// skippable "try voice entry now" step.
 ///
 /// Navigation between steps is handled via setState, no extra routes pushed.
 /// On completion [OnboardingService.markComplete] is called and the auth bloc
@@ -33,7 +35,7 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
   int _step = 0;
   final _onboardingService = OnboardingService();
 
-  static const _totalSteps = 2;
+  static const _totalSteps = 3;
 
   @override
   void initState() {
@@ -41,12 +43,17 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
     _resumeStep();
   }
 
-  /// Jumps to step 2 if accounts already exist, so users who created
-  /// accounts in a previous session (including via the old onboarding flow)
-  /// are not sent through step 1 again. The bloc's own result is handled by
-  /// the [BlocListener] in [build]; a fetch failure just leaves the user on
-  /// step 1, same as before.
+  /// Jumps to the correct step if earlier ones are already done, so users
+  /// who left mid-flow (or created accounts/categories in a previous session
+  /// via the old onboarding flow) are not sent through steps they already
+  /// completed. The bloc's own result is handled by the [BlocListener] in
+  /// [build]; a fetch failure just leaves the user on step 1, same as
+  /// before.
   Future<void> _resumeStep() async {
+    if (await _onboardingService.hasCompletedCategories()) {
+      if (mounted) setState(() => _step = 2);
+      return;
+    }
     if (await _onboardingService.hasCompletedAccounts()) {
       if (mounted) setState(() => _step = 1);
       return;
@@ -65,11 +72,17 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
   }
 
   /// Only sets the accounts flag; the final onboarding flag is set at the
-  /// end of step 2, so relaunching between steps resumes at step 2 instead
+  /// end of step 3, so relaunching between steps resumes correctly instead
   /// of going straight to the dashboard.
   Future<void> _goToStep2() async {
     await _onboardingService.markAccountsComplete();
     if (mounted) setState(() => _step = 1);
+  }
+
+  /// Only sets the categories flag; see [_goToStep2].
+  Future<void> _goToStep3() async {
+    await _onboardingService.markCategoriesComplete();
+    if (mounted) setState(() => _step = 2);
   }
 
   Future<void> _finish() async {
@@ -110,10 +123,15 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
                           key: const ValueKey('step_account'),
                           onComplete: _goToStep2,
                         )
-                      : StepCreateCategories(
-                          key: const ValueKey('step_categories'),
-                          onComplete: _finish,
-                        ),
+                      : _step == 1
+                          ? StepCreateCategories(
+                              key: const ValueKey('step_categories'),
+                              onComplete: _goToStep3,
+                            )
+                          : StepTryVoice(
+                              key: const ValueKey('step_voice'),
+                              onComplete: _finish,
+                            ),
                 ),
               ),
             ],
@@ -139,6 +157,7 @@ class _OnboardingAppBar extends StatelessWidget {
     final stepLabels = [
       l10n.onboardingStep1StepLabel,
       l10n.onboardingStep2StepLabel,
+      l10n.onboardingStep3StepLabel,
     ];
     final textTheme = Theme.of(context).textTheme;
 

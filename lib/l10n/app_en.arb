@@ -313,8 +313,9 @@
     }
   },
 
-  "onboardingStep1StepLabel": "Step 1 of 2 - Accounts",
-  "onboardingStep2StepLabel": "Step 2 of 2 - Categories",
+  "onboardingStep1StepLabel": "Step 1 of 3 - Accounts",
+  "onboardingStep2StepLabel": "Step 2 of 3 - Categories",
+  "onboardingStep3StepLabel": "Step 3 of 3 - Try it out",
 
   "onboardingStep1Title": "Add your accounts",
   "onboardingStep1Subtitle": "Add at least one account to start tracking your finances.",
@@ -336,6 +337,11 @@
   "onboardingAddCustomCategory": "Add custom category",
   "onboardingFinishButton": "Finish",
   "onboardingCategoriesError": "Could not save categories. Please try again.",
+
+  "onboardingStep3Title": "Try it yourself",
+  "onboardingStep3Subtitle": "Record your first expense by speaking. This is the fastest way to use Solvi.",
+  "onboardingTryVoiceButton": "Try it now",
+  "onboardingSkipVoiceButton": "Not now",
 
   "catFood": "Food",
   "catTransport": "Transport",

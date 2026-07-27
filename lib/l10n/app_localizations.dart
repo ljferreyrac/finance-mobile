@@ -1517,14 +1517,20 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingStep1StepLabel.
   ///
   /// In en, this message translates to:
-  /// **'Step 1 of 2 - Accounts'**
+  /// **'Step 1 of 3 - Accounts'**
   String get onboardingStep1StepLabel;
 
   /// No description provided for @onboardingStep2StepLabel.
   ///
   /// In en, this message translates to:
-  /// **'Step 2 of 2 - Categories'**
+  /// **'Step 2 of 3 - Categories'**
   String get onboardingStep2StepLabel;
+
+  /// No description provided for @onboardingStep3StepLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Step 3 of 3 - Try it out'**
+  String get onboardingStep3StepLabel;
 
   /// No description provided for @onboardingStep1Title.
   ///
@@ -1639,6 +1645,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not save categories. Please try again.'**
   String get onboardingCategoriesError;
+
+  /// No description provided for @onboardingStep3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it yourself'**
+  String get onboardingStep3Title;
+
+  /// No description provided for @onboardingStep3Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Record your first expense by speaking. This is the fastest way to use Solvi.'**
+  String get onboardingStep3Subtitle;
+
+  /// No description provided for @onboardingTryVoiceButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it now'**
+  String get onboardingTryVoiceButton;
+
+  /// No description provided for @onboardingSkipVoiceButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get onboardingSkipVoiceButton;
 
   /// No description provided for @catFood.
   ///
