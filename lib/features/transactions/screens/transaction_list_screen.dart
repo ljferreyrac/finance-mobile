@@ -536,7 +536,6 @@ class _VoiceGuardBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
     final message = needsAccount
         ? l10n.voiceNeedsAccountMessage
@@ -544,31 +543,31 @@ class _VoiceGuardBanner extends StatelessWidget {
     final actionLabel = needsAccount ? l10n.createAccount : l10n.createCategory;
 
     return Material(
-      color: colorScheme.errorContainer,
+      color: AppColors.teal50,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Row(
           children: [
-            Icon(Icons.info_outline, color: colorScheme.onErrorContainer, size: 18),
+            const Icon(Icons.info_outline, color: AppColors.teal400, size: 18),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
                 message,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: colorScheme.onErrorContainer,
+                      color: AppColors.neutral900,
                     ),
               ),
             ),
             TextButton(
               onPressed: onAction,
               style: TextButton.styleFrom(
-                foregroundColor: colorScheme.onErrorContainer,
+                foregroundColor: AppColors.teal400,
                 visualDensity: VisualDensity.compact,
               ),
               child: Text(actionLabel),
             ),
             IconButton(
-              icon: Icon(Icons.close, size: 18, color: colorScheme.onErrorContainer),
+              icon: const Icon(Icons.close, size: 18, color: AppColors.neutral600),
               onPressed: onDismiss,
               visualDensity: VisualDensity.compact,
               padding: EdgeInsets.zero,
