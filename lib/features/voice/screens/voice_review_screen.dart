@@ -11,6 +11,7 @@ import '../bloc/voice_event.dart';
 import '../bloc/voice_state.dart';
 import '../models/transaction_draft_model.dart';
 import '../widgets/draft_card_widget.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_snack_bar.dart';
 import '../../../shared/utils/localized_message_resolver.dart';
 
@@ -188,7 +189,7 @@ class _ConfirmFab extends StatelessWidget {
                       .add(const VoiceDraftConfirmed())
                   : null,
               backgroundColor: canConfirm
-                  ? const Color(0xFF1D9E75)
+                  ? AppColors.teal400
                   : Theme.of(context).colorScheme.surfaceContainerHighest,
               foregroundColor: canConfirm
                   ? Colors.white
@@ -513,7 +514,7 @@ class _DraftEditSheetState extends State<_DraftEditSheet> {
               onPressed: _save,
               style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 14),
-                backgroundColor: const Color(0xFF1D9E75),
+                backgroundColor: AppColors.teal400,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
