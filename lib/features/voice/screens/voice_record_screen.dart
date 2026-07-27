@@ -9,6 +9,7 @@ import '../bloc/voice_bloc.dart';
 import '../bloc/voice_event.dart';
 import '../bloc/voice_state.dart';
 import 'voice_review_screen.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_snack_bar.dart';
 import '../../../shared/utils/localized_message_resolver.dart';
 
@@ -178,7 +179,7 @@ class _MicButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    const primaryColor = Color(0xFF1D9E75);
+    const primaryColor = AppColors.teal400;
 
     Widget button = GestureDetector(
       onTap: onTap,
@@ -280,7 +281,7 @@ class _RecordingTimerState extends State<_RecordingTimer> {
           '$minutes:$seconds',
           style: Theme.of(context).textTheme.displaySmall?.copyWith(
                 fontFeatures: const [FontFeature.tabularFigures()],
-                color: const Color(0xFF1D9E75),
+                color: AppColors.teal400,
               ),
         ),
         const SizedBox(height: 8),
@@ -305,7 +306,7 @@ class _ProcessingIndicator extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         const CircularProgressIndicator(
-          color: Color(0xFF1D9E75),
+          color: AppColors.teal400,
           strokeWidth: 3,
         ),
         const SizedBox(height: 16),

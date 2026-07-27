@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:finanzas_ia/l10n/app_localizations.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../accounts/models/account_model.dart';
 import '../../categories/models/category_model.dart';
 import '../models/transaction_draft_model.dart';
@@ -42,7 +43,7 @@ class DraftCardWidget extends StatelessWidget {
     final amountColor = isExpense
         ? colorScheme.error
         : isIncome
-            ? const Color(0xFF1D9E75)
+            ? AppColors.teal400
             : colorScheme.onSurface;
     final amountPrefix = isExpense ? '-' : isIncome ? '+' : '';
     final currencySymbol = draft.currency == 'USD' ? '\$' : 'S/';
