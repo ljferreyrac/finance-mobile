@@ -321,25 +321,13 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
           );
         },
       ),
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FloatingActionButton.small(
-            heroTag: 'transaction_list_fab',
-            onPressed: () => _openForm(),
-            tooltip: AppLocalizations.of(context)!.newTransaction,
-            child: const Icon(Icons.add),
-          ),
-          const SizedBox(height: 12),
-          FloatingActionButton.extended(
-            heroTag: 'transaction_list_voice_fab',
-            onPressed: _checkAndOpenVoice,
-            backgroundColor: AppColors.teal400,
-            foregroundColor: Colors.white,
-            icon: const Icon(Icons.mic_rounded),
-            label: Text(AppLocalizations.of(context)!.voiceFabLabel),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'transaction_list_voice_fab',
+        onPressed: _checkAndOpenVoice,
+        backgroundColor: AppColors.teal400,
+        foregroundColor: Colors.white,
+        icon: const Icon(Icons.mic_rounded),
+        label: Text(AppLocalizations.of(context)!.voiceFabLabel),
       ),
     );
   }
@@ -398,7 +386,7 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
       child: ListView.builder(
         controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(bottom: 150),
+        padding: const EdgeInsets.only(bottom: 96),
         itemCount: items.length + (isLoadingMore ? 1 : 0),
         itemBuilder: (context, index) {
           if (index == items.length) {
