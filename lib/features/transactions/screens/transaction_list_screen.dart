@@ -222,9 +222,9 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
         title: Text(AppLocalizations.of(context)!.transactionsTitle),
         actions: [
           IconButton(
-            icon: const Icon(Icons.mic_none_rounded),
-            tooltip: AppLocalizations.of(context)!.voiceRecordTitle,
-            onPressed: _checkAndOpenVoice,
+            icon: const Icon(Icons.add),
+            tooltip: AppLocalizations.of(context)!.newTransaction,
+            onPressed: () => _openForm(),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 8),
@@ -321,11 +321,25 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'transaction_list_fab',
-        onPressed: () => _openForm(),
-        tooltip: AppLocalizations.of(context)!.newTransaction,
-        child: const Icon(Icons.add),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton.small(
+            heroTag: 'transaction_list_fab',
+            onPressed: () => _openForm(),
+            tooltip: AppLocalizations.of(context)!.newTransaction,
+            child: const Icon(Icons.add),
+          ),
+          const SizedBox(height: 12),
+          FloatingActionButton.extended(
+            heroTag: 'transaction_list_voice_fab',
+            onPressed: _checkAndOpenVoice,
+            backgroundColor: AppColors.teal400,
+            foregroundColor: Colors.white,
+            icon: const Icon(Icons.mic_rounded),
+            label: Text(AppLocalizations.of(context)!.voiceFabLabel),
+          ),
+        ],
       ),
     );
   }
@@ -381,7 +395,7 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
       child: ListView.builder(
         controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(bottom: 88),
+        padding: const EdgeInsets.only(bottom: 150),
         itemCount: items.length + (isLoadingMore ? 1 : 0),
         itemBuilder: (context, index) {
           if (index == items.length) {

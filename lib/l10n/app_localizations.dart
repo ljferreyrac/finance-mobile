@@ -1874,6 +1874,12 @@ abstract class AppLocalizations {
   /// **'Voice entry'**
   String get voiceRecordTitle;
 
+  /// No description provided for @voiceFabLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice entry'**
+  String get voiceFabLabel;
+
   /// No description provided for @voiceRecordingStatus.
   ///
   /// In en, this message translates to:

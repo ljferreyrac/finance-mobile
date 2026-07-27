@@ -382,6 +382,7 @@
   "someTransactionsFailedToSave": "Algunas transacciones no se pudieron guardar.",
 
   "voiceRecordTitle": "Registrar por voz",
+  "voiceFabLabel": "Registrar por voz",
   "voiceRecordingStatus": "Grabando... toca para detener",
   "voiceProcessingStatus": "Procesando...",
   "voiceIdleStatus": "Toca el microfono y describe tus gastos",
