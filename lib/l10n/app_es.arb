@@ -313,8 +313,9 @@
     }
   },
 
-  "onboardingStep1StepLabel": "Paso 1 de 2 - Cuentas",
-  "onboardingStep2StepLabel": "Paso 2 de 2 - Categorias",
+  "onboardingStep1StepLabel": "Paso 1 de 3 - Cuentas",
+  "onboardingStep2StepLabel": "Paso 2 de 3 - Categorias",
+  "onboardingStep3StepLabel": "Paso 3 de 3 - Pruebalo",
 
   "onboardingStep1Title": "Agrega tus cuentas",
   "onboardingStep1Subtitle": "Agrega al menos una cuenta para empezar a registrar tus finanzas.",
@@ -336,6 +337,11 @@
   "onboardingAddCustomCategory": "Agregar categoria personalizada",
   "onboardingFinishButton": "Finalizar",
   "onboardingCategoriesError": "No se pudieron guardar las categorias. Intenta de nuevo.",
+
+  "onboardingStep3Title": "Pruebalo tu mismo",
+  "onboardingStep3Subtitle": "Registra tu primer gasto hablando. Esta es la forma mas rapida de usar Solvi.",
+  "onboardingTryVoiceButton": "Probar ahora",
+  "onboardingSkipVoiceButton": "Ahora no",
 
   "catFood": "Comida",
   "catTransport": "Transporte",
