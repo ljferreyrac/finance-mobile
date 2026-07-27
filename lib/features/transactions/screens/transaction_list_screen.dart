@@ -385,7 +385,10 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
     }
 
     if (items.isEmpty) {
-      return TransactionEmptyState(filter: _activeFilter);
+      return TransactionEmptyState(
+        filter: _activeFilter,
+        onVoiceTap: _checkAndOpenVoice,
+      );
     }
 
     return RefreshIndicator(
