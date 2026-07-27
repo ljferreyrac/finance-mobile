@@ -382,6 +382,7 @@
   "someTransactionsFailedToSave": "Some transactions could not be saved.",
 
   "voiceRecordTitle": "Voice entry",
+  "voiceFabLabel": "Voice entry",
   "voiceRecordingStatus": "Recording... tap to stop",
   "voiceProcessingStatus": "Processing...",
   "voiceIdleStatus": "Tap the microphone and describe your expenses",

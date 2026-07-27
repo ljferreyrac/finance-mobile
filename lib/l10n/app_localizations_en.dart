@@ -942,6 +942,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get voiceRecordTitle => 'Voice entry';
 
   @override
+  String get voiceFabLabel => 'Voice entry';
+
+  @override
   String get voiceRecordingStatus => 'Recording... tap to stop';
 
   @override
